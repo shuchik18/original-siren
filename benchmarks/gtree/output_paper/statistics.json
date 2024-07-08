@@ -1,0 +1,93 @@
+{
+  "n_plans": 4,
+  "n_vars": 2,
+  "bp": {
+    "plan": {
+      "0": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0011670589447021484
+      },
+      "1": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0006730556488037109
+      },
+      "2": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0008990764617919922
+      },
+      "3": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0021970272064208984
+      }
+    },
+    "n_true_satisfied": 4,
+    "n_inferred_satisfied": 4,
+    "n_satisfied_tp": 4,
+    "n_satisfied_fp": 0,
+    "n_satisfied_fn": 0,
+    "n_satisfied_tn": 0
+  },
+  "ds": {
+    "plan": {
+      "0": {
+        "true_satisfied": false,
+        "infer_satisfied": false
+      },
+      "1": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0007030963897705078
+      },
+      "2": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0010051727294921875
+      },
+      "3": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0005660057067871094
+      }
+    },
+    "n_true_satisfied": 3,
+    "n_inferred_satisfied": 3,
+    "n_satisfied_tp": 3,
+    "n_satisfied_fp": 0,
+    "n_satisfied_fn": 0,
+    "n_satisfied_tn": 1
+  },
+  "ssi": {
+    "plan": {
+      "0": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0012919902801513672
+      },
+      "1": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0006489753723144531
+      },
+      "2": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0010192394256591797
+      },
+      "3": {
+        "true_satisfied": true,
+        "infer_satisfied": true,
+        "analysis_time": 0.0005471706390380859
+      }
+    },
+    "n_true_satisfied": 4,
+    "n_inferred_satisfied": 4,
+    "n_satisfied_tp": 4,
+    "n_satisfied_fp": 0,
+    "n_satisfied_fn": 0,
+    "n_satisfied_tn": 0
+  }
+}

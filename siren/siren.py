@@ -83,18 +83,18 @@ def main():
         print(res)
 
         # Get the runtime inference plan by inspecting the particles
-        # plan = runtime_inference_plan(particles)
+        plan = runtime_inference_plan(particles)
 
         if args.verbose:
             # Only for debugging to reduce the expressions
             particles.simplify()
-            # print("===== Mixture =====")
-            # print(particles.mixture())
-            # print("===== Particles =====")
-            # print(particles)
+            print("===== Mixture =====")
+            print(particles.mixture())
+            print("===== Particles =====")
+            print(particles)
 
-        # print("===== Runtime Inference Plan =====")
-        # print(plan)
+        print("===== Runtime Inference Plan =====")
+        print(plan)
 
 if __name__ == "__main__":
     main()

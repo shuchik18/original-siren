@@ -446,12 +446,11 @@ def evaluate(program: Program, method: type[AbsSymState], max_rvs: int=4) -> Abs
   return probstate
 
 def analyze(program: Program, method: type[AbsSymState], max_rvs: int) -> InferencePlan:
-  # prob = evaluate(program, method, max_rvs)
-  #
-  # prob.result()
-  #
-  # inferred_plan = prob.particles.state.plan
+  prob = evaluate(program, method, max_rvs)
 
-  return "{X: N(unke,unke)}"
+  prob.result()
 
+  inferred_plan = prob.particles.state.plan
+
+  return inferred_plan
 

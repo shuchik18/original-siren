@@ -61,14 +61,14 @@ def main():
         )
         t2 = time.time()
         print(inferred_plan)
-        print("===== Analysis Time =====")
-        print(f"{t2 - t1}")
+        # print("===== Analysis Time =====")
+        # print(f"{t2 - t1}")
 
     # If the user only wants to analyze the program, we can stop here
     if not args.analyze_only:
         file_dir = os.path.dirname(os.path.realpath(args.filename))
         t1 = time.time()
-        res = evaluate.evaluate(
+        res, particles = evaluate.evaluate(
             program,
             args.particles,
             inference_method,
@@ -83,14 +83,14 @@ def main():
         print(res)
 
         # Get the runtime inference plan by inspecting the particles
-        # plan = runtime_inference_plan(res)
+        # plan = runtime_inference_plan(particles)
 
         if args.verbose:
             # Only for debugging to reduce the expressions
-            # particles.simplify()
-            print("===== Mixture =====")
+            particles.simplify()
+            # print("===== Mixture =====")
             # print(particles.mixture())
-            print("===== Particles =====")
+            # print("===== Particles =====")
             # print(particles)
 
         # print("===== Runtime Inference Plan =====")

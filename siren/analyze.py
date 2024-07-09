@@ -452,6 +452,6 @@ def analyze(program: Program, method: type[AbsSymState], max_rvs: int) -> Infere
   #
   # inferred_plan = prob.particles.state.plan
 
-  return "{X: N(0,1)}"
+  return "{X: N(unke,unke)}"
 
 

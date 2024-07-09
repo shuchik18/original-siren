@@ -435,30 +435,25 @@ def evaluate(
   file_dir: str,
   seed: Optional[int] = None,
 ) -> Tuple[SymExpr, ProbState]:
-  # functions, expression = program.functions, program.main
-  #
-  # # Make lookup for functions
-  # functions = {f.name: f for f in functions}
-  #
-  # # Initialize particles
-  # particles = ProbState(n_particles, expression, method, seed)
-  # # Evaluate particles until all are finished
-  # while True:
-  #   for i, particle in enumerate(particles):
-  #     if particle.finished:
-  #       continue
-  #     else:
-  #       particles[i] = evaluate_particle(particle, functions, file_dir)
-  #
-  #   # If not all particles are finished, resample the particles
-  #   if particles.finished:
-  #     break
-  #   else:
-  #     particles.resample()
+  functions, expression = program.functions, program.main
 
+  # Make lookup for functions
+  functions = {f.name: f for f in functions}
 
-  res =[]
-  for i in range(n_particles):
-    x = np.random.normal(0,1)
-    res.append(x)
-  return res
+  # Initialize particles
+  particles = ProbState(n_particles, expression, method, seed)
+  # Evaluate particles until all are finished
+  while True:
+    for i, particle in enumerate(particles):
+      if particle.finished:
+        continue
+      else:
+        particles[i] = evaluate_particle(particle, functions, file_dir)
+
+    # If not all particles are finished, resample the particles
+    if particles.finished:
+      break
+    else:
+      particles.resample()
+
+  return np.random.normal(0,1), particles

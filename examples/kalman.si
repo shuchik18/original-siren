@@ -1,1 +1,5 @@
-let x <- gaussian(0,1) in x
+let sample b <- bernoulli(0.5) in
+let mean = if b then 0 else 1 in
+let var = if b then 2 else 4 in
+let x <- gaussian(mean, var) in
+x

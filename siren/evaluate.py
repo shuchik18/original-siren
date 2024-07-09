@@ -456,4 +456,6 @@ def evaluate(
     else:
       particles.resample()
 
-  return np.random.normal(0,1), particles
+
+
+  return  particles.result(), particles

@@ -20,7 +20,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("filename", type=str)
     p.add_argument("--verbose", "-v", action="store_true")
-    p.add_argument("--particles", "-p", type=int, default=1, help="Number of particles to use during inference")
+    p.add_argument("--particles", "-p", type=int, default=100, help="Number of particles to use during inference")
     p.add_argument("--analyze", "-a", action="store_true", help="Apply the inference plan satisfiability analysis during compilation")
     p.add_argument("--analyze-only", "-ao", action="store_true", help="Only apply the inference plan satisfiability analysis, does not run the program")
     p.add_argument(

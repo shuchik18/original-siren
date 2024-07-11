@@ -456,4 +456,4 @@ def evaluate(
     else:
       particles.resample()
 
-  return particles.result(), particles
+  return particles, particles

@@ -4,6 +4,9 @@ from collections import deque
 
 import siren.inference.conjugate as conj
 from siren.inference.interface import *
+# from siren.analysis.ssi import *
+# from siren.analysis.interface import *
+
 
 # Implementation of semi-symbolic inference
 # Adapted from https://github.com/IBM/probzelus/
@@ -28,6 +31,7 @@ class SSIState(SymState):
 
   def assume(self, name: Optional[Identifier], annotation: Optional[Annotation], distribution: SymDistr[T]) -> RandomVar[T]:
     rv = self.new_var()
+
     if annotation is not None:
       if name is None:
         raise ValueError('Cannot annotate anonymous variable')
@@ -49,11 +53,26 @@ class SSIState(SymState):
         return _observe()
       
     s = _observe()
+    print("the value of s in the observe", s)
     # Update the random variable with the observed value
     self.intervene(rv, Delta(value, sampled=False))
     return s
 
-  def value(self, rv: RandomVar[T]) -> Const[T]:
+  # def abs_value_impl(self, rv: AbsRandomVar[T]) -> AbsConst[T]:
+  #   def _value() -> None:
+  #     try:
+  #       self.hoist_and_eval(rv)
+  #       return
+  #     except NonConjugate as e:
+  #       self.value(e.rv_nc)
+  #       return _value()
+  #
+  #   _value()
+  #   self.intervene(rv, AbsDelta(AbsConst(UnkC()), sampled=True))
+  #
+  #   return AbsConst(UnkC())
+
+  def value_impl(self, rv: RandomVar[T]) -> Const[T]:
     # Try to draw the random variable until it works
     def _value() -> T:
       try:
@@ -64,6 +83,7 @@ class SSIState(SymState):
         return _value()
 
     v = _value()
+    print("the value of v in valueimpl",v)
     # Update the random variable with the sampled value
     self.intervene(rv, Delta(Const(v), sampled=True))
     return Const(v)
@@ -84,6 +104,8 @@ class SSIState(SymState):
     
   def score(self, rv: RandomVar[T], v: T) -> float:
     # RV has to be root
+    print("print the val of the rv in score",rv)
+    print("the hoist and eval in the score",self.hoist_and_eval(rv))
     self.hoist_and_eval(rv)
     return self.distr(rv).score(v)
 
@@ -246,12 +268,14 @@ class SSIState(SymState):
         case _:
           raise ValueError(self.distr(rv_child))
 
+
+
     # Swaps the distributions of the two random variables
     def _swap(rv_par: RandomVar, rv_child: RandomVar) -> bool:
       def _update(marginal_posterior: Optional[Tuple[SymDistr, SymDistr]]) -> bool:
         if marginal_posterior is None:
           return False
-        
+
         marginal, posterior = marginal_posterior
         self.set_distr(rv_par, posterior)
         self.set_distr(rv_child, marginal)

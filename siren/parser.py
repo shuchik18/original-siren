@@ -190,7 +190,9 @@ def parse_program(program: str) -> Program:
       if identifier.module is None and identifier.name in Operator.__members__:
         assert identifier.name is not None
         return GenericOp(Operator[identifier.name], _make_args(args))
-      raise ValueError(x)
+      # raise ValueError(x)
+      return GenericOp(Operator[identifier.name], _make_args(args))
+
     else:
       raise ValueError(x.data)
 
@@ -246,13 +248,13 @@ def parse_program(program: str) -> Program:
       return LetRV(
           identifier,
           annotation,
-          _make_ops(distribution),
+          _make_expression(distribution),
           _make_expression(expression),
       )
     elif x.data == "observe":
       distribution, value = x.children
       # Observe has to take a distribution (a built in operator) as the first argument
-      return Observe(_make_ops(distribution), _make_expression(value))
+      return Observe(_make_expression(distribution), _make_expression(value))
     elif x.data == "resample":
       return Resample()
     elif x.data == "list":

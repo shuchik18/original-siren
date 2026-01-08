@@ -1,6 +1,7 @@
 import argparse
 import os
 import time
+import json
 
 from . import parser, evaluate, analyze
 from .inference import SSIState, DSState, BPState
@@ -20,7 +21,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("filename", type=str)
     p.add_argument("--verbose", "-v", action="store_true")
-    p.add_argument("--particles", "-p", type=int, default=100, help="Number of particles to use during inference")
+    p.add_argument("--particles", "-p", type=int, default=1, help="Number of particles to use during inference")
     p.add_argument("--analyze", "-a", action="store_true", help="Apply the inference plan satisfiability analysis during compilation")
     p.add_argument("--analyze-only", "-ao", action="store_true", help="Only apply the inference plan satisfiability analysis, does not run the program")
     p.add_argument(
@@ -53,17 +54,19 @@ def main():
             raise ValueError("Invalid method")
 
     # Run the inference plan satisfiability analysis
-    if args.analyze or args.analyze_only:
-        print("===== Inferred Inference Plan =====")
-        t1 = time.time()
-        inferred_plan = analyze.analyze(
-            program, analysis_method, args.max_rvs
-        )
-        t2 = time.time()
-        print(inferred_plan)
+    # if args.analyze or args.analyze_only:
+    #     print("===== Inferred Inference Plan =====")
+    #     t1 = time.time()
+    #     inferred_plan = analyze.analyze(
+    #         program, analysis_method, args.max_rvs
+    #     )
+    #     t2 = time.time()
+    #     print(inferred_plan)
         # print("===== Analysis Time =====")
         # print(f"{t2 - t1}")
-
+    # with open("output.json", "r") as infile:
+    #     input_data = json.load(infile)
+    #     input_data1 = parser.parse_program(input_data)
     # If the user only wants to analyze the program, we can stop here
     if not args.analyze_only:
         file_dir = os.path.dirname(os.path.realpath(args.filename))
@@ -83,7 +86,7 @@ def main():
         print(res)
 
         # Get the runtime inference plan by inspecting the particles
-        plan = runtime_inference_plan(particles)
+        # plan = runtime_inference_plan(particles)
 
         if args.verbose:
             # Only for debugging to reduce the expressions
@@ -94,7 +97,7 @@ def main():
             print(particles)
 
         print("===== Runtime Inference Plan =====")
-        print(plan)
+        # print(plan)
 
 if __name__ == "__main__":
     main()

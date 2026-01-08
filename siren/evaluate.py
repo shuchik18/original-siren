@@ -1,3 +1,4 @@
+from sre_constants import error
 from typing import Any, Optional, List, Dict, Tuple
 import numpy as np
 import os
@@ -5,9 +6,15 @@ from multiprocessing import Pool, cpu_count, Queue, Process
 import time
 from copy import copy
 
+from numpy.ma.core import conjugate
+
+from siren.analysis.interface import AbsSymState
 from siren.grammar import *
+from siren.inference import SSIState
 from siren.utils import get_pair, get_lst
 from siren.inference.interface import SymState, Context, ProbState, Particle
+import siren.inference.conjugate as conj
+
 
 def assume(name: Identifier, annotation: Optional[Annotation], distribution: SymExpr,
            state: SymState) -> Const | RandomVar:
@@ -15,14 +22,16 @@ def assume(name: Identifier, annotation: Optional[Annotation], distribution: Sym
   rv = state.assume(name, annotation, distribution)
   # If the annotation is sample, sample the value
   if annotation is Annotation.sample:
-    return state.value(rv)
+    return state.value_impl(rv)
   return rv
 
 def observe(score: float, distribution: SymExpr, v: SymExpr, state: SymState) -> float:
   assert isinstance(distribution, SymDistr)
   rv = state.assume(None, None, distribution)
+
   # the conditioned value must be a constant
   v = state.value_expr(v)
+  # print("value of v in the observe function................", v)
   s = state.observe(rv, v)
   return score + s
 
@@ -89,10 +98,14 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
     if len(args) == 0:
       return particle, args, new_args
     p1 = _evaluate(particle.update(cont=args[0]))
+    # print("what is the value of the p1................................",p1)
     if not p1.finished:
       args[0] = p1.cont
       return p1, args, new_args
+    # print("what is the value in the evaluate args", (p1.final_expr))
     new_args.append(p1.final_expr)
+
+
     return _evaluate_args(p1, args[1:], new_args)
 
   # Evaluate built-in operators
@@ -108,6 +121,8 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
       fst, args2 = get_pair(args)
       snd, trd = get_pair(args2)
       return particle.update(cont=constructor(fst, snd, trd), finished=True)
+
+
 
     # Map to the correct operator
     match op.name:
@@ -136,6 +151,24 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
         return _evaluate_unops(particle, _make_list, args)
       case "pair":
         return _evaluate_binops(particle, Pair, args)
+      # case "get_distr":
+      #   def make_distr(x):
+      #     val = particle.state.distr(x)
+      #     return val
+      #   return _evaluate_unops(particle,make_distr,args)
+      # case "gaussian_posterior":
+      #   def make_gaussian_posterior(x):
+
+      # case 'get_distr':
+      #   (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+      #   # if len(old_args) != 0:
+      #   #   return p1.update(cont=Apply(functions, old_args + new_args), finished=False)
+      #   new_rv = _convert_args(new_args)
+      #
+      #   val_distr = p1.state.distr(new_rv)
+      #   print("val distr", val_distr)
+      #   # need to call the distr for the rv and then return that distr
+      #   return p1.update(cont=val_distr, finished=True)
       case "gaussian":
         return _evaluate_binops(particle, Normal, args)
       case "beta":
@@ -199,6 +232,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
         (p1, old_args, new_args) = _evaluate_args(particle, args, [])
         if len(old_args) != 0:
           return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+
         new_args = _convert_args(new_args)
 
         exprs = get_lst(new_args)
@@ -223,6 +257,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
 
         exprs = get_lst(new_args)
         return p1.update(cont=Const(len(exprs)), finished=True)
+
       case 'range':
         (p1, old_args, new_args) = _evaluate_args(particle, args, [])
         if len(old_args) != 0:
@@ -296,6 +331,293 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
       case _:
         raise ValueError(func)
 
+  def _evaluate_prob(particle:Particle, func: Identifier, args: List[Expr[SymExpr]]) -> Any:
+    assert func.module == 'Prob'
+    match func.name:
+      case 'new_var':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_rv = p1.state.new_var()
+        return p1.update(cont=new_rv, finished=True)
+      case 'set_distr':
+        #RandomVar
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_args = _convert_args(new_args)
+
+
+        # use the func of get_pair which splits the values into the tuple
+        #distr
+        # print("what is the value of the new args",new_args)
+        rv,val_distr = get_pair(new_args)
+
+        # print("rv",rv)
+        # print("val_distr1",val_distr)
+        # print("distr", p1.state.distr(rv))
+
+        # do not have map it will only take the single rv and single distr
+        #set_distr
+        if val_distr is not  RandomVar:
+
+          new_distr = p1.state.set_distr(rv,val_distr)
+        else:
+          new_distr = p1.state.distr(rv)
+        # print("new distr",new_distr)
+
+        return _evaluate(p1.update(cont=new_distr, finished=True))
+      case 'get_distr':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        # new_rv = _convert_args(new_args)
+        # print("in get distr",new_rv)
+        # if new_rv is not RandomVar:
+        #   val_distr = new_rv
+        # else:
+        #   val_distr = p1.state.distr(new_rv)
+        # print("val distr", val_distr)
+        # if val_distr is not RandomVar:
+        #   new_distr =  val_distr
+        # else:
+        # val =[]
+        # val.append(new_args)
+        # #looping
+        # for item in val:
+        # if isinstance(new_args, RandomVar):
+        #     new_rv = _convert_args(new_args)
+        #     new_distr = p1.state.distr(new_rv)
+        # else:
+        #     new_distr = new_args
+
+
+        # if isinstance(new_distr,RandomVar):
+        #   new_var = p1.state.distr(new_distr)
+        # else:
+        #   new_var = new_distr
+        new_rv = _convert_args(new_args)
+        new_distr = p1.state.distr(new_rv)
+
+
+
+        #need to call the distr for the rv and then return that distr
+        return p1.update(cont=new_distr, finished=True)
+      case 'finalize':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_rv = _convert_args(new_args)
+        return p1.update(cont=new_rv, finished=True)
+      case 'swap':
+        #rv
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_args = _convert_args(new_args)
+
+      # similar to set_distr func for two val from get_pair
+        #another rv
+        #make the changes with the storing values
+        rv,rv1 = get_pair(new_args)
+
+
+
+        return p1.update(cont=None, finished=True) # we need to return the boolean in the future
+      case 'get_par':
+        # rv
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_args = _convert_args(new_args)
+        #eval or some other which give the actual constant as return value
+
+        rv,val = get_pair(new_args)
+        # rv1,val1 = Normal.marginal_parameters(new_args)
+        # if isinstance(val, Const):
+        #   # assert val.v >= 0
+        #   new_val = val.v
+        #   return new_val
+        # if val is Const:
+        #   assert isinstance(val, Const)
+        #   new_val = val.v
+        #   return new_val
+
+
+
+        # dict_rv_val = {}
+        # dict_rv_val[rv] = val
+        # new_val1,new_val = Normal.marginal_parameters(val)
+        # new_val = p1.state.str_expr(val)
+        assert isinstance(val, Const)
+        # assert val.v >0
+
+
+        #check how parents do come from ssi file
+        val_rv= p1.state.val_parents(rv)
+
+        # val_const_rv = dict_rv_val.get(val)
+        # new_val = val_const
+
+        # if val_const_rv in val_rv:
+        #   new_rv = val_const_rv
+        # for i in val.v:
+        # print("val",int(val.v))
+        new_rv = val_rv[int(float(val.v))]
+        # new_rv = val_rv[int(val1)]
+
+        # print("---------------------------------------------------")
+        # # print(rv)
+        # # print(val)
+        # # print(new_val1)
+        # # print(new_val)
+        # print(val_rv)
+        # # print(val_const_rv)
+        # # print(new_rv)
+        # print("---------------------------------------------------")
+
+
+
+
+        return p1.update(cont=new_rv, finished=True)
+      case 'eval':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_rv = _convert_args(new_args)
+        return p1.update(cont=new_rv, finished=True)
+      case 'set_lookup':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        new_val = p1.state.get_rv_by_name(new_arg)
+        return p1.update(cont=new_val, finished=True)
+      case 'lookup':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        new_val = p1.state.get_rv_by_name(new_arg)
+        return p1.update(cont=new_val, finished=True)
+      case 'gaussian_posterior':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        val_par, val_child = get_pair(new_arg)
+        # print("==========================gaussian_posterior================================")
+        # print(new_arg)
+        # print("============================================================================")
+        # (val_par_distr, val) = get_pair(new_arg)
+        # (val_child_distr, val1) = get_pair(val)
+        # (val_par,val_child) = get_pair(val1)
+        val_child_distr = p1.state.distr(val_child)
+        val_par_distr = p1.state.distr(val_par)
+
+        new_val = conj.gaussian_posterior(p1.state,val_par_distr,val_child_distr,val_par,val_child)
+        # print("............................................",new_val)
+        return p1.update(cont=new_val, finished=True)
+      case 'gaussian_marginal':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        # print("==========================gaussian_marginal================================")
+        # print(new_arg)
+        # print("============================================================================")
+        (val_par,val_child) = get_pair(new_arg)
+        # (val_par_distr, val) = get_pair(new_arg)
+        # (val_child_distr, val1) = get_pair(val)
+        # (val_par, val_child) = get_pair(val1)
+
+        val_child_distr = p1.state.distr(val_child)
+        val_par_distr= p1.state.distr(val_par)
+        new_val = conj.gaussian_marginal(p1.state,val_par_distr,val_child_distr,val_par,val_child)
+        print("................................",new_val)
+        return p1.update(cont=new_val, finished=True)
+      case 'null':
+        (p1,old_args,new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          raise ValueError(old_args)
+        return p1.update(cont=None, finished=True)
+      case 'get_mu':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        # print("new arg value is ",new_arg)
+        # print("p1",p1)
+        # print("old_args",old_args)
+        # print("new_args",new_arg.mu)
+        # print("new args var",new_arg.var)
+        val = new_arg
+        # match Normal:
+        #   case Normal(mu,var):
+        #     return
+
+        return p1.update(cont=val.mu, finished=True)
+      case 'get_var':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        # print("p1",p1)
+        # print("old_args",old_args)
+        # print("new_args",new_args)
+        # val_mu, val_var = _evaluate_ops(particle, Op, new_arg)
+        val = new_arg
+        return p1.update(cont=val.var, finished=True)
+      case 'get_p':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        val = new_arg
+        return p1.update(cont=val.p, finished=True)
+      case 'observe_inner':
+        (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+        if len(old_args) != 0:
+          return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+        new_arg = _convert_args(new_args)
+        rv, val = get_pair(new_arg)
+        print("------------------------------observe inner--------------------------------------")
+        print("rv", rv)
+        print("val", val)
+        print("============================================================================")
+        v = p1.state.value_expr(val)
+        print("value of v in the observe function................", v)
+        s = p1.state.observe(rv, v)
+        return p1.update(score=s, finished=True)
+      case _:
+        raise ValueError(func)
+
+  # def _evaluate_set_lookup(particle:Particle, func: Identifier, args: List[Expr[SymExpr]]) -> Any:
+  #   # match func.name:
+  #   #   case 'set_lookup':
+  #   assert func.module == 'set_lookup'
+  #   (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+  #   if len(old_args) != 0:
+  #         return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+  #   new_arg = _convert_args(new_args)
+  #   new_val = p1.state.get_rv_by_name(new_arg)
+  #   return p1.update(cont=new_val, finished=True)
+  #   # case _:
+  #   #     raise ValueError(func)
+  #
+  #
+  # def _evaluate_lookup(particle:Particle,func:Identifier,args: List[Expr[SymExpr]]) -> Any:
+  #   # match func.name:
+  #   #   case "lookup":
+  #       (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+  #       if len(old_args) != 0:
+  #         return p1.update(cont=Apply(func, old_args + new_args), finished=False)
+  #       new_arg = _convert_args(new_args)
+  #       new_val = p1.state.name_to_rv(new_arg)
+  #       return p1.update(cont=new_val, finished=True)
+  #     # case _:
+  #     #   raise ValueError(func)
+
   # Evaluate the particle, returning an evaluated particle
   # or a particle with the next expression to evaluate if interrupted by resample
   def _evaluate(particle: Particle) -> Particle:
@@ -303,6 +625,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
       return particle.update(finished=True)
     match particle.cont:
       case Identifier(_, _):
+        # print("cont", particle.cont)
         return particle.update(cont=particle.state.ctx[particle.cont], finished=True)
       case GenericOp(op, args):
         (p1, old_args, new_args) = _evaluate_args(particle, args, [])
@@ -344,6 +667,9 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
               return _evaluate_list(particle, func, args)
             case "File":
               return _evaluate_file(particle, func, args)
+            case "Prob":
+              # print("evaluate prob values in each step", _evaluate_prob(particle, func, args))
+              return _evaluate_prob(particle, func, args)
             case _:
               raise ValueError(func.module)
         else:
@@ -358,6 +684,16 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
           if p2.finished:
             p2.state.ctx = ctx
           return p2
+      # case get_distr(args):
+      #   (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+      #   if len(old_args) != 0:
+      #     return p1.update(cont=Apply(functions, old_args + new_args), finished=False)
+      #   new_rv = _convert_args(new_args)
+      #
+      #   val_distr = p1.state.distr(new_rv)
+      #   print("val distr", val_distr)
+      #   # need to call the distr for the rv and then return that distr
+      #   return p1.update(cont=val_distr, finished=True)
       case IfElse(cond, true, false):
         p1 = _evaluate(particle.update(cont=cond))
         if not p1.finished:
@@ -371,9 +707,13 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
             return p2.update(cont=IfElse(cond_val, p2.cont, false), finished=False)
           then_val = p2.final_expr
           p3 = _evaluate(p2.update(cont=false))
+          # print("if else condition condition", cond_val)
+          # print("if else condition then", then_val)
+          # print("if else then", p3.final_expr)
           if not p3.finished:
             return p3.update(cont=IfElse(p1.cont, p2.cont, p3.cont), finished=False)
           return p3.update(cont=p3.state.ex_ite(cond_val, then_val, p3.final_expr), finished=True)
+
         else:
           # If not pure, fully evaluate the condition, sampling RVs if necessary,
           # and then evaluate only the branch that is taken
@@ -388,35 +728,66 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
               raise ValueError(cond_value)
       case Let(pattern, v, body):
         ctx = copy(particle.state.ctx)
+        print("v",v)
+        print("v with update",particle.update(cont=v) )
         p1 = _evaluate(particle.update(cont=v))
+        print("p1",p1)
         if not p1.finished:
           return p1.update(cont=Let(pattern, p1.cont, body), finished=False)
+
         val = p1.final_expr
+        # print("val",val)
         p1.state.ctx |= match_pattern(pattern, val)
+        # print("p1 update with body....",p1.update(cont=body))
         p2 = _evaluate(p1.update(cont=body))
+        # print("p2",p2)
         # If the body is finished, restore the original context
         if p2.finished:
           p2.state.ctx = ctx
         return p2
       case LetRV(identifier, annotation, distribution, expression):
         p1 = _evaluate(particle.update(cont=distribution))
-        assert isinstance(p1.cont, Op) # should still be an Op even if not finished
+
         if not p1.finished:
           return p1.update(cont=LetRV(identifier, annotation, p1.cont, expression), finished=False)
+        # print("the value cont ",p1.cont)
+        assert isinstance(p1.cont, Op)  # should still be an Op even if not finished
         assert identifier.name is not None # RVs should always be named
+        # print("====================")
+        # print("identifier",identifier)
+        # print("annotation",annotation)
+        # print("distribution",distribution)
+        # print("expression",expression)
+        # print("p1.final_expr",p1.final_expr)
+        # print("===================")
+
         rv = assume(identifier, annotation, p1.final_expr, p1.state)
+
         # After creating the RV, it is just a let expression
+        print("identifier",identifier)
         return _evaluate(p1.update(cont=Let([identifier], rv, expression)))
       case Observe(expression, v):
+        # print("in the observe case expression is ",expression)
+        # print("in the observed case v is ",v)
         p1 = _evaluate(particle.update(cont=expression))
+        # print("in the observed case p1 is ",p1)
+        # print("in the observed case p1.cont is ",p1.cont)
+        # print("in the observed case op is ",Op)
         assert isinstance(p1.cont, Op) # should still be an Op even if not finished
         if not p1.finished:
           return p1.update(cont=Observe(p1.cont, v), finished=False)
         d = p1.final_expr
+        # print("in the observed case d is ",d)
+        # print("in the observed case op is ",Op)
         assert isinstance(d, Op) # should still be an Op
         p2 = _evaluate(p1.update(cont=v))
+        # print("in the observed case p2 is ",p2)
+        # print("in the observed case p2.cont is ",p2.cont)
         if not p2.finished:
           return p2.update(cont=Observe(d, p2.cont), finished=False)
+        # print("in the observed case p2.score is ",p2.score)
+        # print("in the observed case p2.final_expr is ",p2.final_expr)
+        # print("in the observed case p2.state is ",p2.state)
         w = observe(p2.score, d, p2.final_expr, p2.state)
         # Update the particle with the new score
         return p2.update(score=w)

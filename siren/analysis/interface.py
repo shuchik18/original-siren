@@ -131,36 +131,56 @@ class AbsSymState(object):
   # Renames old rv to new rv in the state, ctx, and given expr
   # Depends on rename_rv, which may need to be overridden
   def rename(self, expr: ED, old: AbsRandomVar, new: AbsRandomVar) -> ED:
+    print("just after the rename function been called")
+    print("expr",expr)
+    print("old",old)
+    print("new",new)
     if new == old:
       return expr
     # rename each distribution
     for rv in self.vars():
+      print("renaming the each distribution", self.vars())
       # rename references in parameters
       self.entry_rename_rv(rv, old, new)
+      print("rename refernces in parameters", self.entry_rename_rv(rv, old, new))
+      print("new",new)
+      print("old",old)
+      print("new",new)
 
       # use new name as entry key
       if rv == old:
         self.state[new] = self.state[rv]
+        print("new",new)
         del self.state[rv]
 
     # rename entries in context
     self.ctx.rename(old, new)
+    print("rename entreies in context")
+    print("old",old)
+    print("new",new)
+    print("renaming done")
 
     return expr.rename(old, new)
   
   def unify(self, e1: AbsSymExpr, e2: AbsSymExpr, other: OTHERSTATE) -> Tuple[AbsSymExpr, AbsSymExpr, OTHERSTATE]:
+    print("just unify func starts ", e1,e2)
+    print("other state",other)
     vars2 = set(e2.rvs())
+    print("after setting the e2", vars2)
     
     capture_avoiding_mapping : Dict[AbsRandomVar, AbsRandomVar] = {}
 
     unify_mapping = match_rvs({}, e1, e2)
+    print("unify mapping ", unify_mapping)
 
     # Get canonical variable for for each e2_var from set of e1_vars
     map2temp = {}
     # use temp vars to avoid collision
     map2canonical = {}
     for e2_var, e1_vars in unify_mapping.items():
+      print("e2_vars and e1_vars", e1_vars, e2_var)
       canon_var = min(e1_vars, key=lambda v: v.rv)
+      print("canon_var", canon_var)
 
       # capture avoiding substitution to avoid mapping a variable 
       # in e2 to an irrelevant variable in e2 or a variable referenced
@@ -172,43 +192,71 @@ class AbsSymState(object):
         or canon_var in other.entry_referenced_rvs({e2_var}):
         # capture avoiding substitution
         new_var = self.new_var(other.counter)
+        print("new_var", new_var)
         capture_avoiding_mapping[canon_var] = new_var
+        print("capture_avoiding_mapping", capture_avoiding_mapping)
 
       temp_var = self.new_var(other.counter)
+      print("temp_var", temp_var)
       map2temp[e2_var] = temp_var
+      print("map2temp", map2temp)
       map2canonical[temp_var] = canon_var
+      print("map2canonical", map2canonical)
 
     for old_var, new_var in capture_avoiding_mapping.items():
+      print("old_var", old_var)
+      print("new_var", new_var)
       e2 = other.rename(e2, old_var, new_var)
+      print("e2", e2)
 
     # rename other vars in e1_vars to temp_var in e1 and self
     for e2_var, e1_vars in unify_mapping.items():
+      print("rename other vars in e1_vars to temp_var in e1 and self")
+      print("e2_var and e1_vars in loop", e1_vars, e2_var)
       temp_var = map2temp[e2_var]
+      print("temp_var", temp_var)
 
       for e1_var in e1_vars:
+        print("e1_var", e1_var)
+        print("e1_vars", e1_vars)
         e1 = self.rename(e1, e1_var, temp_var)
+        print("e1", e1)
 
     # rename e2_var to temp_var in e2 and other
     for e2_var, e1_vars in unify_mapping.items():
+      print("rename e2_var to temp_var in e2 and other")
+      print("e2_var", e2_var)
+      print("e1_vars", e1_vars)
       temp_var = map2temp[e2_var]
+      print("temp_var", temp_var)
 
       e2 = other.rename(e2, e2_var, temp_var)
+      print("e2", e2)
 
     # rename temp vars to canon vars
     for temp_var, canon_var in map2canonical.items():
+      print("temp vars to canon vars")
+      print("canon_var", canon_var)
+      print("temp_var", temp_var)
       e2 = other.rename(e2, temp_var, canon_var)
+      print("e2", e2)
       e1 = self.rename(e1, temp_var, canon_var)
+      print("e1", e1)
 
     return (e1, e2, other)
   
   # Joins the two states
   # Depends on join_entry and copy_entry, which may need to be overridden
   def join(self, other: 'AbsSymState') -> None:
+    print("start join")
     self_vars = self.vars()
     other_vars = other.vars()
+    print("self_vars", self_vars)
+    print("other_vars", other_vars)
 
     for rv in self_vars | other_vars:
       if rv in self_vars and rv in other_vars:
+        print("entering entry_join")
         self.entry_join(rv, other)
       elif rv in self_vars:
         # keep distribution
@@ -216,21 +264,28 @@ class AbsSymState(object):
       elif rv in other_vars:
         # copy entry
         # copy pv first
+        print("entering set pv")
         self.set_pv(rv, copy(other.pv(rv)))
         for key, value in other.state[rv].items():
+          print("entering set entry")
           self.set_entry(rv, **{key: copy(value)})
       else:
         raise ValueError(rv)
       
     # set counter to max of both states
+    print("end join")
     self.counter = max(self.counter, other.counter)
 
   # Rename_join: rename the variable in e2 and join the states (and expressions)
   def narrow_join_expr(self, e1: AbsSymExpr, e2: AbsSymExpr, other: 'AbsSymState') -> AbsSymExpr:
+    print("in narrow_join_expr function:",e1,e2)
     e1, e2, other = self.unify(e1, e2, other)
-    
+    print("other var",other)
+    print("after unify function:",e1,e2)
     e = self.join_expr(e1, e2, other)
+    print("after join_expr function:",e)
     self.join(other)
+    print("after join function:",self.join(other))
 
     return e
   
@@ -472,8 +527,10 @@ class AbsSymState(object):
       
   # Computes the join of two expressions
   def join_expr(self, e1: AbsSymExpr, e2: AbsSymExpr, other: 'AbsSymState') -> AbsSymExpr:
+    print("join expr start")
     match e1, e2:
       case AbsConst(v1), AbsConst(v2):
+        print("enters case AbsConst and AbsConst")
         eq = v1 == v2
         if isinstance(eq, UnkC):
           return AbsConst(UnkC())
@@ -482,36 +539,48 @@ class AbsSymState(object):
         else:
           return AbsConst(UnkC())
       case AbsConst(_), AbsRandomVar(_):
+        print("enters case AbsConst and AbsRandomVar")
         return e2
       case AbsRandomVar(_), AbsConst(_):
+        print("enters case AbsRandomVar and AbsConst ")
         return e1
       case AbsRandomVar(_), AbsRandomVar(_):
+        print("enters case AbsRandomVar and AbsRandomVar")
         return e1 if e1 == e2 else UnkE([e1, e2])
       case AbsAdd(e11, e12), AbsAdd(e21, e22):
+        print("enters case AbsAdd and AbsAdd")
         return AbsAdd(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case AbsMul(e11, e12), AbsMul(e21, e22):
+        print("enters case AbsMul and AbsMul")
         return AbsMul(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case AbsDiv(e11, e12), AbsDiv(e21, e22):
+        print("enters case AbsDiv and AbsDiv")
         return AbsDiv(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case AbsIte(cond1, true1, false1), AbsIte(cond2, true2, false2):
+        print("enters case AbsIte and AbsIte")
         return AbsIte(self.join_expr(cond1, cond2, other), 
                       self.join_expr(true1, true2, other),
                       self.join_expr(false1, false2, other))
       case AbsEq(e11, e12), AbsEq(e21, e22):
+        print("enters case AbsEq and AbsEq")
         return AbsEq(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case AbsLt(e11, e12), AbsLt(e21, e22):
+        print("enters case AbsLt and AbsLt")
         return AbsLt(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case AbsConst(c), AbsLst(es):
+        print("enters case AbsConst and AbsLst")
         if isinstance(c, UnkC) or isinstance(c, list):
           return self.join_expr(AbsLst([]), e2, other)
         else:
           raise ValueError(c)
       case AbsLst(es), AbsConst(c):
+        print("enters case AbsLst and AbsConst")
         if isinstance(c, UnkC) or isinstance(c, list):
           return self.join_expr(e1, AbsLst([]), other)
         else:
           raise ValueError(c)
       case AbsLst(es1), AbsLst(es2):
+        print("enters case AbsLst and AbsLst")
         es = []
         if len(es1) == 0:
           return e2
@@ -531,6 +600,7 @@ class AbsSymState(object):
             if len(es) > 0:
               match es[-1]:
                 case UnkE(parents):
+                  print("enters Unke parents case")
                   new_parents = []
                   for p in parents + rest_parents:
                     if p in new_parents:
@@ -538,6 +608,7 @@ class AbsSymState(object):
                     new_parents.append(p)
                   es[-1] = UnkE(new_parents)
                 case TopE():
+                  print("enters TopE case")
                   new_parents = []
                   for p in rest_parents:
                     if p in new_parents:
@@ -549,10 +620,12 @@ class AbsSymState(object):
                       other.set_dynamic(p)
                   es[-1] = TopE()
                 case _:
+                  print("enters case _")
                   es.append(UnkE(rest_parents))
               break
         return AbsLst(es)     
       case AbsConst(c), AbsPair(e21, e22):
+        print("enters case AbsConst and AbsPair")
         if isinstance(c, UnkC):
           return self.join_expr(AbsPair(AbsConst(UnkC()), AbsConst(UnkC())), e2, other)
         elif isinstance(c, tuple):
@@ -560,6 +633,7 @@ class AbsSymState(object):
         else:
           raise ValueError(c)
       case AbsPair(e11, e12), AbsConst(c):
+        print("enters case AbsPair and AbsConst")
         if isinstance(c, UnkC):
           return self.join_expr(e1, AbsPair(AbsConst(UnkC()), AbsConst(UnkC())), other)
         elif isinstance(c, tuple):
@@ -567,8 +641,10 @@ class AbsSymState(object):
         else:
           raise ValueError(c)
       case AbsPair(e11, e12), AbsPair(e21, e22):
+        print("enters case AbsPair and AbsConst")
         return AbsPair(self.join_expr(e11, e21, other), self.join_expr(e12, e22, other))
       case TopE(), _:
+        print("enters case TopE")
         parents = []
         for p in e2.rvs():
           if p in parents:
@@ -580,6 +656,7 @@ class AbsSymState(object):
               other.set_dynamic(rv_par)
         return TopE()
       case _, TopE():
+        print("enters case _")
         parents = []
         for p in e1.rvs():
           if p in parents:
@@ -591,6 +668,7 @@ class AbsSymState(object):
               self.set_dynamic(rv_par)
         return TopE()
       case _, _:
+        print("enters case _")
         parents = []
         for p in e1.rvs() + e2.rvs():
           if p in parents:
@@ -604,9 +682,13 @@ class AbsSymState(object):
             if rv_par in other.vars():
               other.set_dynamic(rv_par)
           return TopE()
+        print("exit join expr")
         return UnkE(parents)
   
   def join_distr(self, d1: AbsSymDistr, d2: AbsSymDistr, other: 'AbsSymState') -> AbsSymDistr:
+    print("enters join_distr")
+    print("d1 val",d1)
+    print("d2 val",d2)
     match d1, d2:
       case AbsNormal(mu1, var1), AbsNormal(mu2, var2):
         return AbsNormal(self.join_expr(mu1, mu2, other), self.join_expr(var1, var2, other))
@@ -808,7 +890,12 @@ class AbsSymState(object):
   # Joins the entries to the same variable in the two states
   # Base symbolic state only holds 'distribution' and 'pv' entries
   def entry_join(self, rv: AbsRandomVar, other: 'AbsSymState') -> None:
+    print("entering entry join")
+    print("rv val",rv)
+    print("other val",other)
+    print("entering set distr func")
     self.set_distr(rv, self.join_distr(self.distr(rv), other.distr(rv), other))
+    print("exiting set distr func")
     self.set_pv(rv, self.pv(rv) | other.pv(rv))
     annotations = [self.annotation(rv), other.annotation(rv)]
     if Annotation.symbolic in annotations:

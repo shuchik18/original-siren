@@ -5,13 +5,14 @@ import warnings
 from siren.grammar import *
 from siren.utils import is_pair, is_lst, get_pair, get_lst, fast_copy
 
+
 # Shared code between different inference algorithms
 # Contains the SymState interface algorithms must subclass and implement
 
 # Exception for when an annotation is violated
 class RuntimeViolatedAnnotationError(Exception):
   pass
-
+name_to_rv ={}
 # Symbolic state used for the hybrid inference interface
 class SymState(object):
   def __init__(self, seed=None) -> None:
@@ -19,6 +20,7 @@ class SymState(object):
     # State has to have distribution and pv
     # State entries are maintained as a dictionary
     self.state: Dict[RandomVar, Dict[str, Any]] = {}
+    self.rv_to_name: Dict[RandomVar, Dict[str, Any]] = {}
     self.ctx: Context = Context()
     self.counter: int = 0
     self.rng = np.random.default_rng(seed=seed)
@@ -57,13 +59,13 @@ class SymState(object):
       self.state[variable][key] = value
 
     # Check if annotations violated
-    if 'distribution' in kwargs:
-      distribution = kwargs['distribution']
-      if isinstance(distribution, Delta):
-        if self.annotation(variable) == Annotation.symbolic\
-          and distribution.sampled:
-          raise RuntimeViolatedAnnotationError(
-            f"{self.get_entry(variable, 'pv')} is annotated as symbolic but will be sampled")
+    # if 'distribution' in kwargs:
+    #   distribution = kwargs['distribution']
+      # if isinstance(distribution, Delta):
+      #   if self.annotation(variable) == Annotation.symbolic\
+      #     and distribution.sampled:
+      #     raise RuntimeViolatedAnnotationError(
+      #       f"{self.get_entry(variable, 'pv')} is annotated as symbolic but will be sampled")
       
   def pv(self, rv: RandomVar) -> Optional[Identifier]:
     return self.get_entry(rv, 'pv')
@@ -71,6 +73,16 @@ class SymState(object):
   def distr(self, rv: RandomVar) -> SymDistr:
     distribution = self.get_entry(rv, 'distribution')
     return distribution
+
+  def set_lookup(self,rv: RandomVar,name:Identifier)->None:
+    name_to_rv[rv] = name
+    # rv_to_name[rv] = name
+
+  def get_rv_by_name(self,name:Identifier) ->Expr:
+    return name_to_rv.get(name)
+
+  def val_parents(self,rv: RandomVar) -> Set[RandomVar]:
+    return self.parents(rv)
   
   def annotation(self, rv: RandomVar) -> Optional[Annotation]:
     return self.get_entry(rv, 'annotation')
@@ -118,7 +130,7 @@ class SymState(object):
         del self.state[rv]
 
   def str_distrs(self, rv: RandomVar) -> str:
-    distr = self.eval(rv)
+    # distr = self.eval(rv)
     match self.get_entry(rv, 'distribution'):
       case Normal(mu, var):
         return f"Normal({self.str_expr(mu)}, {self.str_expr(var)})"
@@ -249,6 +261,7 @@ class SymState(object):
       return Const(consts)
     
     def _eval(expr: SymExpr) -> SymExpr:
+      # print("distri...............", self.distr(expr))
       match expr:
         case Const(_):
           return expr
@@ -258,6 +271,7 @@ class SymState(object):
               return _eval(v)
             case _:
               self.set_entry(expr, distribution=self.eval_distr(self.get_entry(expr, 'distribution')))
+              # print("distri...............",expr)
               return expr
         case Add(e1, e2):
           return self.ex_add(_eval(e1), _eval(e2))
@@ -290,6 +304,10 @@ class SymState(object):
   def eval_distr(self, distr: SymDistr) -> SymDistr:
     match distr:
       case Normal(mu, var):
+        # print("((((((((((((((((((((((((((((((((((((((((((((((((((((((((((")
+        # print("what is mu",mu)
+        # print("what is var",var)
+        # print("))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
         return Normal(self.eval(mu), self.eval(var))
       case Bernoulli(p):
         return Bernoulli(self.eval(p))
@@ -346,7 +364,7 @@ class SymState(object):
   # Needs to be overridden by the implementation
   def marginalize(self, expr: RandomVar) -> None:
     raise NotImplementedError()
-      
+
   # Samples all the random variables in the expression and simplifies it
   def value_expr(self, expr: SymExpr) -> Const:
     match expr:
@@ -449,13 +467,13 @@ class Particle(object):
   # Asserts that the particle is finished and returns the final expression
   # which must be a symbolic expression
   @property
-  def final_expr(self) -> SymExpr:
+  def final_expr(self) -> SymExpr :
     if self.finished:
-      assert isinstance(self.cont, SymExpr)
-      return self.cont
+        assert isinstance(self.cont,  SymExpr | None | Apply)
+        return self.cont
     else:
       raise ValueError(f'Particle not finished: {self}')
-    
+
   # Update the particle with new values (or keep the same if None is passed)
   def update(self, cont: Optional[Expr] = None,
               state: Optional[SymState] = None, 

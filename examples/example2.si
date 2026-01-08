@@ -1,0 +1,13 @@
+let rv1 = Prob.new_var() in
+let () = Prob.set_distr(rv1,gaussian(0.0,100.0)) in
+let () = Prob.set_lookup("x",rv1) in
+let x = rv1 in
+let rv3 = Prob.new_var() in
+let () = Prob.set_distr(rv3,gaussian(x,1.0)) in
+let () = Prob.set_distr(rv3,gaussian(Prob.get_mu(Prob.get_distr(rv3)),Prob.get_var(Prob.get_distr(rv3)))) in
+let () = Prob.set_distr(rv3,gaussian(Prob.get_mu(Prob.get_distr(rv3)),Prob.get_var(Prob.get_distr(rv3)))) in
+let () = Prob.set_distr(Prob.get_par(rv3,0),gaussian((rv3 * 0.9900990099009901), 0.9900990099009901)) in
+let () = Prob.set_distr(rv3,gaussian(0.0, 101.0)) in
+let () = Prob.observe_inner((rv3, 3.0)) in
+let () = Prob.null() in
+Prob.finalize(x)

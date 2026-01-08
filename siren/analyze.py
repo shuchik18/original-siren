@@ -417,10 +417,12 @@ def evaluate_particle(particle: AbsParticle, functions: Dict[Identifier, Functio
         return _evaluate(p1.update(cont=Let([identifier], rv, expression)))
       case Observe(expression, v):
         p1 = _evaluate(particle.update(cont=expression))
+        print("p1 in the evaluate file in observe", p1)
         assert isinstance(p1.cont, Op) # should still be an Op
         d = p1.final_expr
+        print("d in the observe is ",d)
         p2 = _evaluate(p1.update(cont=v))
-        # print(p2.state)
+        print("val p2 expr in observe",p2.final_expr)
         # print('====')
         # print(d, p2.final_expr)
         observe(d, p2.final_expr, p2.state)

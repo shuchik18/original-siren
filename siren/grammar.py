@@ -32,7 +32,7 @@ Operator = Enum("Operator", [
   "pair",
   "gaussian", "beta", "bernoulli", 
   "binomial", "beta_binomial", "negative_binomial", "exponential", "gamma", 
-  "poisson", "delta", "categorical", "uniform_int", "student_t", 
+  "poisson", "delta", "categorical", "uniform_int", "student_t",
 ])
 
 @dataclass(frozen=True)
@@ -79,7 +79,8 @@ class Apply(Expr[S]):
   args: List['Expr[S]']
 
   def __str__(self):
-    return f"{self.func}({self.args})"
+    # return f"{self.func}({self.args})"
+    return f"{self.func}({','.join(map(str,self.args))}"
 
 @dataclass(frozen=True)
 class IfElse(Expr[S]):
@@ -89,7 +90,14 @@ class IfElse(Expr[S]):
 
   def __str__(self):
     return f"if {self.cond} then {self.then} else {self.else_}"
-  
+
+@dataclass(frozen=True)
+class get_distr(Expr[S]):
+  rv: 'Expr[S]'
+
+  def __str__(self):
+    return f"{self.rv}"
+#
 @dataclass(frozen=True)
 class Let(Expr[S]):
   var: List[Identifier]
@@ -105,7 +113,7 @@ class Let(Expr[S]):
 class LetRV(Expr[S]):
   var: Identifier
   annotation: Annotation | None
-  distribution: 'Op[S]'
+  distribution: 'Expr[S]'
   body: 'Expr[S]'
 
   def __str__(self):
@@ -775,7 +783,7 @@ class Delta(SymDistr[T]):
   sampled: bool = False
 
   def __str__(self):
-    return f"Delta({self.v}, {self.sampled})"
+    return f"Delta(v={self.v}, sampled={self.sampled})"
   
   def marginal_parameters(self) -> T:
     assert isinstance(self.v, Const)

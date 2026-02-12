@@ -73,19 +73,25 @@ class SSIState(SymState):
   #   return AbsConst(UnkC())
 
   def value_impl(self, rv: RandomVar[T]) -> Const[T]:
+    print("going into value_impl")
     # Try to draw the random variable until it works
     def _value() -> T:
       try:
+        print("value of draw in value_impl", self.distr(rv))
         return self.draw(rv)
       except NonConjugate as e:
         # Sample whichever parent that is not conjugate
+        print("val in the nonconjugate state", self.value(e.rv_nc))
+        print("value of nonconjugate in value_impl", e.rv_nc)
         self.value(e.rv_nc)
         return _value()
 
     v = _value()
     print("the value of v in valueimpl",v)
+
     # Update the random variable with the sampled value
     self.intervene(rv, Delta(Const(v), sampled=True))
+    print("value in the end of value_impl", Const(v))
     return Const(v)
   
   def marginalize(self, rv: RandomVar) -> None:
@@ -110,8 +116,12 @@ class SSIState(SymState):
     return self.distr(rv).score(v)
 
   def draw(self, rv: RandomVar) -> Any:
+    print("going into the rv in draw")
     # RV has to be root
+
     self.hoist_and_eval(rv)
+    print("hoist and eval in the draw", self.hoist_and_eval(rv))
+    print("the distr which the function returns in the draw function",self.distr(rv).draw(self.rng))
     return self.distr(rv).draw(self.rng)
 
   def intervene(self, rv: RandomVar[T], v: Delta[T]) -> None:

@@ -7,7 +7,7 @@ val make_observations = fun (yobs, xs) ->
   cons(x, xs)
 in
 
-let data = List.range(1, 2) in
+let data = List.range(1, 3) in
 
 let x0 = 0 in
 let xs = fold(make_observations, data, [x0]) in

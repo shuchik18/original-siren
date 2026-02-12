@@ -63,22 +63,22 @@ def is_scaled(state: SymState, expr: SymExpr, e: SymExpr) -> Optional[SymExpr]:
 
 # Returns (a, b) such that expr = a * rv + b
 def is_affine(state: SymState, expr: SymExpr, rv: RandomVar) -> Optional[Tuple[SymExpr, SymExpr]]:
-  print("_________________________________in is affine func__________________________________________")
-  print("expr", expr)
-  print("rv", rv)
-  print("_____________________________________________________________________________")
+  # print("_________________________________in is affine func__________________________________________")
+  # print("expr", expr)
+  # print("rv", rv)
+  # print("_____________________________________________________________________________")
   match expr:
     case Const(_):
-      print("in constant case in affine func")
+      # print("in constant case in affine func")
       return (Const(0), expr)
     case RandomVar(_):
-      print("in random var case in affine func")
+      # print("in random var case in affine func")
       if expr == rv:
         return (Const(1), Const(0))
       else:
         return (Const(0), expr)
     case Add(e1, e2):
-      print("in add case in affine func")
+      # print("in add case in affine func")
       coefs1 = is_affine(state, e1, rv)
       coefs2 = is_affine(state, e2, rv)
       if coefs1 is None or coefs2 is None:
@@ -88,7 +88,7 @@ def is_affine(state: SymState, expr: SymExpr, rv: RandomVar) -> Optional[Tuple[S
         a2, b2 = coefs2
         return (state.ex_add(a1, a2), state.ex_add(b1, b2))
     case Mul(e1, e2):
-      print("in mul case in affine func")
+      # print("in mul case in affine func")
       coefs1 = is_affine(state, e1, rv)
       coefs2 = is_affine(state, e2, rv)
       if coefs1 is None or coefs2 is None:
@@ -106,7 +106,7 @@ def is_affine(state: SymState, expr: SymExpr, rv: RandomVar) -> Optional[Tuple[S
           case _:
             return None
     case Div(e1, e2):
-      print("in div case in affine func")
+      # print("in div case in affine func")
       coefs1 = is_affine(state, e1, rv)
       coefs2 = is_affine(state, e2, rv)
       if coefs1 is None or coefs2 is None:
@@ -120,19 +120,19 @@ def is_affine(state: SymState, expr: SymExpr, rv: RandomVar) -> Optional[Tuple[S
           case _:
             return None
     case Ite(_):
-      print("in ite case in affine func")
+      # print("in ite case in affine func")
       return None
     case Eq(_):
-      print("in eq case in affine func")
+      # print("in eq case in affine func")
       return None
     case Lt(_):
-      print("in lt case in affine func")
+      # print("in lt case in affine func")
       return None
     case Lst(_):
-      print("in lst case in affine func")
+      # print("in lst case in affine func")
       return  None
     case Pair(_):
-      print("in pair case in affine func")
+      # print("in pair case in affine func")
       return None
     case _:
       raise ValueError(expr)
@@ -141,18 +141,18 @@ def is_affine(state: SymState, expr: SymExpr, rv: RandomVar) -> Optional[Tuple[S
 
 def gaussian_conjugate_check(state: SymState, prior: SymDistr, likelihood: SymDistr, 
                              rv_par: RandomVar, rv_child: RandomVar) -> bool:
-  print("--------------------------------------------gaussian conjugate check-------------------------------------------")
-  print("prior",prior)
-  print("likelihood",likelihood)
-  print("rv_par",rv_par)
-  print("rv_child",rv_child)
-  print("---------------------------------------------------------------------------------------")
+  # print("--------------------------------------------gaussian conjugate check-------------------------------------------")
+  # print("prior",prior)
+  # print("likelihood",likelihood)
+  # print("rv_par",rv_par)
+  # print("rv_child",rv_child)
+  # print("---------------------------------------------------------------------------------------")
   match prior, likelihood:
     case Normal(mu0, var0), Normal(mu, var):
       coefs = is_affine(state, mu, rv_par)
       if coefs is None:
         return False
-      print("clear coefs in check ")
+      # print("clear coefs in check ")
 
       return not mu0.depends_on(rv_child, True) \
             and not var0.depends_on(rv_child, True) \
@@ -166,7 +166,7 @@ def gaussian_marginal(state: SymState, prior: Normal, likelihood: Normal,
   
   if not gaussian_conjugate_check(state, prior, likelihood, rv_par, rv_child):
     return None
-  print("clear guassian conjugate check in marginal")
+  # print("clear guassian conjugate check in marginal")
   
   mu0, var0 = prior.mu, prior.var
   mu, var = likelihood.mu, likelihood.var
@@ -174,7 +174,7 @@ def gaussian_marginal(state: SymState, prior: Normal, likelihood: Normal,
   coefs = is_affine(state, mu, rv_par)
   if coefs is None:
     return None
-  print("clear is affine or coefs none content in marginal")
+  # print("clear is affine or coefs none content in marginal")
   
   a, b = coefs
 
@@ -190,19 +190,19 @@ def gaussian_posterior(state: SymState, prior: Normal, likelihood: Normal,
                       rv_par: RandomVar, rv_child: RandomVar, obs: Optional[SymExpr]=None) -> Optional[Normal]:
   if not gaussian_conjugate_check(state, prior, likelihood, rv_par, rv_child):
     return None
-  print("clear guassian conjugate check in posterior")
+  # print("clear guassian conjugate check in posterior")
   mu0, var0 = prior.mu, prior.var
   mu, var = likelihood.mu, likelihood.var
 
   coefs = is_affine(state, mu, rv_par)
   if coefs is None:
     return None
-  print("clear is affine or coefs none content in posterior")
+  # print("clear is affine or coefs none content in posterior")
   
   a, b = coefs
 
   x = rv_child if obs is None else obs
-  print("clear x value and also printing x value",x)
+  # print("clear x value and also printing x value",x)
 
   mu01 = state.ex_add(state.ex_mul(a, mu0), b)
   var01 = state.ex_mul(state.ex_mul(a, a), var0)

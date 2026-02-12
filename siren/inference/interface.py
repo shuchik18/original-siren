@@ -61,11 +61,11 @@ class SymState(object):
     # Check if annotations violated
     # if 'distribution' in kwargs:
     #   distribution = kwargs['distribution']
-      # if isinstance(distribution, Delta):
-      #   if self.annotation(variable) == Annotation.symbolic\
-      #     and distribution.sampled:
-      #     raise RuntimeViolatedAnnotationError(
-      #       f"{self.get_entry(variable, 'pv')} is annotated as symbolic but will be sampled")
+    #   if isinstance(distribution, Delta):
+    #     if self.annotation(variable) == Annotation.symbolic\
+    #       and distribution.sampled:
+    #       raise RuntimeViolatedAnnotationError(
+    #         f"{self.get_entry(variable, 'pv')} is annotated as symbolic but will be sampled")
       
   def pv(self, rv: RandomVar) -> Optional[Identifier]:
     return self.get_entry(rv, 'pv')
@@ -88,6 +88,8 @@ class SymState(object):
     return self.get_entry(rv, 'annotation')
   
   def set_distr(self, rv: RandomVar, distribution: SymDistr) -> None:
+    print("rv in set distr",rv)
+    print("distribution in set distr",distribution)
     self.set_entry(rv, distribution=distribution)
 
   def set_pv(self, rv: RandomVar, pv: Optional[Identifier]) -> None:

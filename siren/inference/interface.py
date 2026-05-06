@@ -88,8 +88,6 @@ class SymState(object):
     return self.get_entry(rv, 'annotation')
   
   def set_distr(self, rv: RandomVar, distribution: SymDistr) -> None:
-    print("rv in set distr",rv)
-    print("distribution in set distr",distribution)
     self.set_entry(rv, distribution=distribution)
 
   def set_pv(self, rv: RandomVar, pv: Optional[Identifier]) -> None:

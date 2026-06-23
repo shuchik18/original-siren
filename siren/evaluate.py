@@ -22,9 +22,9 @@ def assume(name: Identifier, annotation: Optional[Annotation], distribution: Sym
   rv = state.assume(name, annotation, distribution)
   # If the annotation is sample, sample the value
   if annotation is Annotation.sample:
-    print("--------------------In assume-------------------------")
-    print("value of annotation sample",annotation.sample)
-    print("----------------------------------------------------")
+    # print("--------------------In assume-------------------------")
+    # print("value of annotation sample",annotation.sample)
+    # print("----------------------------------------------------")
     return state.value_impl(rv)
   return rv
 
@@ -34,7 +34,7 @@ def observe(score: float, distribution: SymExpr, v: SymExpr, state: SymState) ->
 
   # the conditioned value must be a constant
   v = state.value_expr(v)
-  # print("value of v in the observe function................", v)
+  print("value of v in the observe function................", v)
   s = state.observe(rv, v)
   return score + s
 
@@ -98,15 +98,20 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
   def _evaluate_args(particle: Particle,
                      args: List[Expr[SymExpr]],
                      new_args: List[SymExpr]) -> Tuple[Particle, List[Expr[SymExpr]], List[SymExpr]]:
+    print("start of evaluate args")
     if len(args) == 0:
       return particle, args, new_args
     p1 = _evaluate(particle.update(cont=args[0]))
+
+    print("in evaluate args value of args", args[0])
     # print("what is the value of the p1................................",p1)
     if not p1.finished:
       args[0] = p1.cont
       return p1, args, new_args
     # print("what is the value in the evaluate args", (p1.final_expr))
     new_args.append(p1.final_expr)
+    print("val of new args in evaluate args",new_args)
+    print("end of evaluate args")
 
 
     return _evaluate_args(p1, args[1:], new_args)
@@ -273,10 +278,13 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
 
         # Range only takes constants
         a, b = get_pair(new_args)
+        print("a in evaluate list",a)
+        print("b  in evaluate list",b)
         match p1.state.eval(a), p1.state.eval(b):
           case Const(a), Const(b):
             assert isinstance(a, Number) and isinstance(b, Number) and a <= b
             l : List[SymExpr] = list(map(Const, range(int(a), int(b))))
+            print("value of l in evaluate list",l)
             return p1.update(cont=Lst(l), finished=True)
           case _:
             raise ValueError(new_args)
@@ -597,8 +605,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
         # print("============================================================================")
         v = p1.state.value_expr(val)
         # print("value of v in the observe function................", v)
-        s = (p1
-             .state.observe(rv, v))
+        s = (p1.state.observe(rv, v))
         return p1.update(score=s, finished=True)
       case _:
         raise ValueError(func)
@@ -636,15 +643,18 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
       return particle.update(finished=True)
     match particle.cont:
       case Identifier(_, _):
+        print("In identifier case")
         # print("cont", particle.cont)
         return particle.update(cont=particle.state.ctx[particle.cont], finished=True)
       case GenericOp(op, args):
+        print("In generic op case")
         (p1, old_args, new_args) = _evaluate_args(particle, args, [])
         if len(old_args) != 0:
           return p1.update(cont=GenericOp(op, old_args + new_args), finished=False)
         new_args = _convert_args(new_args)
         return _evaluate_ops(p1, op, new_args)
       case Fold(func, lst, acc):
+        print("In fold case")
         # Fold is syntactic sugar for a chain of let expressions
         # It's a bounded loop
         print("Inside fold case")
@@ -674,6 +684,8 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
               # Create a temporary variable to store the result of the function
               tempvar = p2.state.ctx.temp_var()
               print("tempvar",tempvar)
+              print("what is valuesi of apply in let stmt",Apply(func, [hd, acc_val]))
+              print("what is the value of the fold in the let stmt", Fold(func, Lst(tl), tempvar))
               e = Let([tempvar],
                       Apply(func, [hd, acc_val]),
                       Fold(func, Lst(tl), tempvar))
@@ -683,6 +695,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
           case _:
             raise ValueError(p1.cont)
       case Apply(func, args):
+        print("Apply case")
         if func.module is not None:
           # use lib functions
           match func.module:
@@ -699,19 +712,29 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
               raise ValueError(func.module)
         else:
           print("in the apply in else condition")
+
           (p1, old_args, new_args) = _evaluate_args(particle, args, [])
+          print("value of p1 in the apply condition",p1)
+          print("old args in apply",old_args)
+          print("new args in apply",new_args)
           if len(old_args) != 0:
             return p1.update(cont=Apply(func, old_args + new_args), finished=False)
           converted_args = _convert_args(new_args)
+          print("converted args in apply",converted_args)
           function = functions[func]
+          print("function in apply",function)
           ctx = copy(p1.state.ctx)
           p1.state.ctx = match_pattern(function.args, converted_args)
           p2 = _evaluate(p1.update(cont=function.body))
+          print("value of ctx", p1.state.ctx)
+          print("p2 in apply",p2)
+          print("end of apply condition of else ")
           if p2.finished:
             p2.state.ctx = ctx
           return p2
 
       case IfElse(cond, true, false):
+        print("ifelse case")
         p1 = _evaluate(particle.update(cont=cond))
         if not p1.finished:
           return p1.update(cont=IfElse(p1.cont, true, false), finished=False)
@@ -744,6 +767,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
             case _:
               raise ValueError(cond_value)
       case Let(pattern, v, body):
+        print("let casse")
         ctx = copy(particle.state.ctx)
         print("v",v)
         # print("v with update",particle.update(cont=v) )
@@ -753,16 +777,17 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
           return p1.update(cont=Let(pattern, p1.cont, body), finished=False)
 
         val = p1.final_expr
-        # print("val",val)
+        print("val",val)
         p1.state.ctx |= match_pattern(pattern, val)
-        # print("p1 update with body....",p1.update(cont=body))
+        print("p1 update with body....",p1.update(cont=body))
         p2 = _evaluate(p1.update(cont=body))
-        # print("p2",p2)
+        print("p2",p2)
         # If the body is finished, restore the original context
         if p2.finished:
           p2.state.ctx = ctx
         return p2
       case LetRV(identifier, annotation, distribution, expression):
+        print("let rv case")
         p1 = _evaluate(particle.update(cont=distribution))
 
         if not p1.finished:
@@ -784,6 +809,7 @@ def evaluate_particle(particle: Particle, functions: Dict[Identifier, Function[S
         # print("identifier",identifier)
         return _evaluate(p1.update(cont=Let([identifier], rv, expression)))
       case Observe(expression, v):
+        print("in observe case")
         # print("in the observe case expression is ",expression)
         # print("in the observed case v is ",v)
         p1 = _evaluate(particle.update(cont=expression))

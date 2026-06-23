@@ -363,6 +363,7 @@ def evaluate_particle(particle: AbsParticle, functions: Dict[Identifier, Functio
             case _:
               raise ValueError(func.module)
         else:
+
           (p1, old_args, new_args) = _evaluate_args(particle, args, [])
           assert len(old_args) == 0
           new_args = _convert_args(new_args)

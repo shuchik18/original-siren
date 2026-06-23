@@ -142,7 +142,7 @@ class Function(Expr[S]):
   body: Expr[S]
 
   def __str__(self):
-    return f"val {self.name} = fun ({', '.join(map(str, self.args))}) = {self.body}"
+    return f"val {self.name} = fun ({', '.join(map(str, self.args))}) in {self.body}"
 
 @dataclass(frozen=True)
 class Program:

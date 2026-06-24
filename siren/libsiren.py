@@ -59,12 +59,14 @@ def observe(particle, distr, val):
 
 #list.range(const, const)
 def list_range(val1, val2):
-  return range(val1, val2)
+  return [Const(i) for i in range(val1, val2)]
 
 
 #fold(func, lst, acc)
-def fold(func, lst, acc):
-  return particle.state.fold(func, lst,acc)
+def fold(particle, func, lst, acc):
+  for item in lst:
+    acc = func(particle, item, acc)
+  return acc
 
 # finalize(Particle, RV)
 def finalize(particle, rv):

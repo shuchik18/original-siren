@@ -1,6 +1,6 @@
 from siren.libsiren import *
 
-def make_obs1(obs, x_pre):
+def make_obs1(particle, obs, x_pre):
   rv3 = new_rv(particle)
   set_distr(particle, rv3, gaussian(x_pre, const(1.0)))
   x = rv3
@@ -16,11 +16,11 @@ def make_obs1(obs, x_pre):
   return x
 
 def program(particle):
-  data = cons(const(1.0), cons(const(3.0), lst()))
+  data = list_range(1, 3)
   rv1 = new_rv(particle)
   set_distr(particle, rv1, gaussian(const(0.0), const(100.0)))
   x_init = rv1
-  xs = fold(make_obs1, data, x_init)
+  xs = fold(particle, make_obs1, data, x_init)
   particle.finished = True
   return xs
 

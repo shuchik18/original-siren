@@ -1,4 +1,6 @@
-from siren.grammar import Normal, Const, Mul
+# from siren.grammar import Normal, Const, Mul
+from siren.grammar import *
+from typing import List
 from siren.evaluate import observe as siren_observe
 from siren.inference.interface import SymState
 from siren.inference.ssi import SSIState
@@ -40,6 +42,13 @@ def times(n1,n2):
 def assume(particle, distr):
   return particle.state.assume(None, None, distr)
 
+#sample(particle,distr)
+def sample(particle, distr):
+  # print("Available methods in SSIState:", dir(particle.state))
+  # print("particel",particle)
+  # print("distr", distr)
+  return particle.state.assume(None, None, distr)
+
 # observe(Particle, Distr, Val)
 def observe(particle, distr, val):
   print("particle:",particle)
@@ -47,6 +56,15 @@ def observe(particle, distr, val):
   print("val:",val)
   s = siren_observe(particle.score, distr, val, particle.state)
   particle.score = s
+
+#list.range(const, const)
+def list_range(val1, val2):
+  return range(val1, val2)
+
+
+#fold(func, lst, acc)
+def fold(func, lst, acc):
+  return particle.state.fold(func, lst,acc)
 
 # finalize(Particle, RV)
 def finalize(particle, rv):
@@ -76,6 +94,10 @@ def get_mu(distr):
 # get_var(Distr)
 def get_var(distr):
   return distr.var
+
+#get_p(Distr):
+def get_p(distr):
+  return distr.p
 
 # observe_inner(Particle, RV, Num)
 def observe_inner(particle, rv, num):

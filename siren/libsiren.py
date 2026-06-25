@@ -30,6 +30,12 @@ def run(cont, n_particles):
 def gaussian(mu, var):
   return Normal(mu, var)
 
+def bernoulli(prob):
+  return Bernoulli(prob)
+
+def delta(x):
+  return Delta(x)
+
 # const(Num)
 def const(n):
   return Const(n)

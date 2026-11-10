@@ -42,7 +42,41 @@ def const(n):
 
 # times(Num, Num)
 def times(n1,n2):
-  Mul(n1,n2)
+  return Mul(n1,n2)
+  
+# Compatibility name emitted by compiled programs.
+def ex_mul(n1, n2):
+  return times(n1, n2)
+
+def div(n1,n2):
+  return Div(n1,n2)
+
+def add(n1,n2):
+  return Add(n1,n2)
+
+def beta(val1,val2):
+  return Beta(val1,val2)
+
+def cons(val1, val2):
+  # val2 is a list built by lst()/cons()
+  return [val1] + list(val2)
+
+def eq(left, right):
+    return Eq.make(left, right)
+
+def ifelse(condition, true_value, false_value):
+    return Ite.make(condition, true_value, false_value)
+
+
+def subst_rv(expr,rv,value):
+  return expr.subst_rv(rv,value)
+
+def pair(a, b):
+  # Generated tuple patterns are flat: pair(a, pair(b, c)) is (a, b, c).
+  # Lists remain individual fields, and left-hand tuple fields stay grouped.
+  if isinstance(b, tuple):
+    return (a, *b)
+  return (a, b)
 
 # assume(Particle, Distr)
 def assume(particle, distr):
@@ -57,9 +91,9 @@ def sample(particle, distr):
 
 # observe(Particle, Distr, Val)
 def observe(particle, distr, val):
-  print("particle:",particle)
-  print("distr:",distr)
-  print("val:",val)
+  # print("particle:",particle)
+  # print("distr:",distr)
+  # print("val:",val)
   s = siren_observe(particle.score, distr, val, particle.state)
   particle.score = s
 
@@ -67,9 +101,23 @@ def observe(particle, distr, val):
 def list_range(val1, val2):
   return [Const(i) for i in range(val1, val2)]
 
+def list_hd(val):
+  return val[0]
+
+def list_tl(val):
+  return val[1:]
+
+def list_rev(val):
+  return val[::-1]
+
+def lst(*args):
+  # lst() -> empty list; lst(x) -> [x]
+  return list(args)
 
 #fold(func, lst, acc)
 def fold(particle, func, lst, acc):
+  if not isinstance(lst, (list, tuple)):
+    lst = [lst]
   for item in lst:
     acc = func(particle, item, acc)
   return acc
@@ -85,7 +133,11 @@ def new_rv(particle):
 # get_par(Particle, RV)
 def get_par(particle, rv, idx):
   parents = particle.state.val_parents(rv)
+  assert parents, f"{rv} has no parents; distr = {particle.state.distr(rv)}"
   return parents[idx.v]
+
+def sub(left, right):
+    return Add(left, Mul(Const(-1), right))
 
 
 # set_distr(Particle, RV, Distr)

@@ -93,11 +93,13 @@ import time
 import csv
 import statistics
 
+from siren.libsiren import bernoulli
+
 # Complete default target array list matching your workspace layout
 DEFAULT_EXAMPLES = [
     "example1", "example-1-compiled", "example-5-compiled", "example8", 
-    "example5", "example9", "example10", "example11", 
-    "example-8-compiled", "example-9-compiled", "example-10-compiled", "example-11-compiled"
+    "example5", "example9", "example10", "example11", "bernoulli-bernoulli-compiled",
+    "example-8-compiled", "example-9-compiled", "example-10-compiled", "example-11-compiled", "example12", "example12-compiled", "outlier", "outlier-compiled", "gaussian-gaussian", "gaussian-gaussian-compiled", "kalman", "kalman-compiled"
 ]
 
 def run_single_example(example_name, num_iterations, runtime_root, csv_writer=None):
@@ -136,7 +138,7 @@ def run_single_example(example_name, num_iterations, runtime_root, csv_writer=No
             
             # Programmatically trigger simulation runner if present in namespace
             if "run" in namespace and "program" in namespace:
-                namespace["run"](namespace["program"], 10)
+                namespace["run"](namespace["program"], 1000)
                 
             end_time = time.time()
             duration = end_time - start_time

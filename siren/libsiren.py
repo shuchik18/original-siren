@@ -64,6 +64,9 @@ def cons(val1, val2):
 def eq(left, right):
     return Eq.make(left, right)
 
+def lt(left, right):
+    return Lt.make(left, right)
+
 def ifelse(condition, true_value, false_value):
     return Ite.make(condition, true_value, false_value)
 
@@ -99,7 +102,21 @@ def observe(particle, distr, val):
 
 #list.range(const, const)
 def list_range(val1, val2):
-  return [Const(i) for i in range(val1, val2)]
+  def bound(value):
+    if isinstance(value, SymExpr):
+      value = SSIState().eval(value)
+      if not isinstance(value, Const):
+        raise TypeError("list_range bounds must evaluate to constants")
+      value = value.v
+    if isinstance(value, float) and value.is_integer():
+      value = int(value)
+    if not isinstance(value, int):
+      raise TypeError("list_range bounds must be integers")
+    return value
+  return [Const(i) for i in range(bound(val1), bound(val2))]
+
+def list_len(values):
+  return Const(len(values))
 
 def list_hd(val):
   return val[0]
@@ -109,6 +126,9 @@ def list_tl(val):
 
 def list_rev(val):
   return val[::-1]
+
+def list_map(particle, func, values):
+  return [func(particle, item) for item in values]
 
 def lst(*args):
   # lst() -> empty list; lst(x) -> [x]

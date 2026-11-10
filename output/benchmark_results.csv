@@ -1,2 +1,2 @@
 Example Name,Iterations,Average Execution Time (s),Standard Deviation (s)
-slam-compiled,10,0.481705,0.044883
+coin,10,0.811656,0.035830

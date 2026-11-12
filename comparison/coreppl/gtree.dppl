@@ -1,0 +1,7 @@
+-- Keep the original observation order, including its DS pruning boundary.
+mexpr
+let a = assume (Gaussian 0.0 10.0) in
+let b = assume (Gaussian a (sqrt 10.0)) in
+observe 2.3 (Gaussian b (sqrt 1000.0));
+observe -55.0 (Gaussian a (sqrt 1000.0));
+a

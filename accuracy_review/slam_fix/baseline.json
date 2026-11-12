@@ -1,0 +1,79 @@
+{
+  "artifact_hashes": {
+    "gaussian-gaussian": "eff6c86c527664c7723ad96d8228c31cea762d28d3f475998f28e9b4a3536efa",
+    "gtree": "3cccffc507f73295758d6d8489e772e1dc69fdb0a26b1de4d16f658031d75522",
+    "kalman": "b8dc78c1431ef367b423a4d424fb4449a833878cfd8560ff94a1211daa54a339",
+    "wheels": "361432866dabdffd7a77c14a5a70413436152c266f53c0ba993c38db2acc3595",
+    "slam": "d47b800f6229ec3a2280c371b49a1ae07643a8345fec31a7e168478ae94ac6be",
+    "outlier": "e6446f893bd516aa0b47f725a86e0d45417c7c62a720a702d57c766974db9b70",
+    "coin": "cab9ff59eed654646b49e2520f2f1ddd0a501d4e32afa89c51111d7a876f6ff9",
+    "gaussian-gaussian-hybrid": "4177c7bca9cde90b4ff2c66a14750ca95d8858d0f982babd4e74d88e2cd92af8"
+  },
+  "slam_runs": [
+    {
+      "time_ms": 45.869666,
+      "standardized_mse": 1.7804226603945574,
+      "mean_rmse": 0.47099450152233885,
+      "mean_standardized_rmse": 1.3343247956905235,
+      "mean_max_abs_error": 0.8537803138373752,
+      "estimate": [
+        0.0116279069767442,
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "time_ms": 54.168917,
+      "standardized_mse": 1.7804226603945574,
+      "mean_rmse": 0.47099450152233885,
+      "mean_standardized_rmse": 1.3343247956905235,
+      "mean_max_abs_error": 0.8537803138373752,
+      "estimate": [
+        0.0116279069767442,
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "time_ms": 71.874542,
+      "standardized_mse": 1.7804226603945574,
+      "mean_rmse": 0.47099450152233885,
+      "mean_standardized_rmse": 1.3343247956905235,
+      "mean_max_abs_error": 0.8537803138373752,
+      "estimate": [
+        0.0116279069767442,
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "time_ms": 49.612834,
+      "standardized_mse": 1.7804226603945574,
+      "mean_rmse": 0.47099450152233885,
+      "mean_standardized_rmse": 1.3343247956905235,
+      "mean_max_abs_error": 0.8537803138373752,
+      "estimate": [
+        0.0116279069767442,
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "time_ms": 36.504584,
+      "standardized_mse": 1.7804226603945574,
+      "mean_rmse": 0.47099450152233885,
+      "mean_standardized_rmse": 1.3343247956905235,
+      "mean_max_abs_error": 0.8537803138373752,
+      "estimate": [
+        0.0116279069767442,
+        0.5,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+benchmark,particles,successful_runs,failed_runs,median_time_ms,standardized_rmse
+wheels,1,5,0,6.795125,3.452962252904325
+wheels,2,5,0,8.357208,3.452962252904325
+wheels,3,5,0,8.930959,3.452962252904325

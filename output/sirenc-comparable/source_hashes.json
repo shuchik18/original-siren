@@ -1,0 +1,15 @@
+{
+  "benchmark_sirenc.py": "ed1d0e779d429aa3fcafe22b5fdea6364d8e6d17b2894aca8feef1dba91b0cb7",
+  "siren/libsiren.py": "b70cf88f7dea0763cebb7d923cb92113d6a5043e434a0b45e84a42820f1db77e",
+  "siren/inference/interface.py": "0eb6653d3f1473563c40745716870110210b82efbcc8dde119cb86f4741971a2",
+  "benchmark_reference.py": "137bed0eb1ef3a022f466c78327e90c18c307d529bee6afeb4cd29ae7207be1c",
+  "benchmark_protocol.py": "89e77794fc2c3d04a404f677f49e5ef671e3088d0f71829b752cd7d1f820a517",
+  "examples/libsiren-examples/gaussian-gaussian-compiled.py": "eff6c86c527664c7723ad96d8228c31cea762d28d3f475998f28e9b4a3536efa",
+  "examples/libsiren-examples/gtree-compiled.py": "3cccffc507f73295758d6d8489e772e1dc69fdb0a26b1de4d16f658031d75522",
+  "examples/libsiren-examples/kalman-compiled.py": "b8dc78c1431ef367b423a4d424fb4449a833878cfd8560ff94a1211daa54a339",
+  "examples/libsiren-examples/wheels-compiled.py": "361432866dabdffd7a77c14a5a70413436152c266f53c0ba993c38db2acc3595",
+  "examples/libsiren-examples/slam-compiled.py": "9f4c51a3aca02ee7b4f990e7b0e772bf8853bf7626a5da69ba4e582ac2b1d268",
+  "examples/libsiren-examples/outlier-compiled.py": "b078b7d6a16feed27e26b625d295858f3d8c0db56b9acc7d293e734a157c830e",
+  "examples/libsiren-examples/coin-compiled.py": "cab9ff59eed654646b49e2520f2f1ddd0a501d4e32afa89c51111d7a876f6ff9",
+  "examples/libsiren-examples/gaussian-gaussian-hybrid-compiled.py": "4177c7bca9cde90b4ff2c66a14750ca95d8858d0f982babd4e74d88e2cd92af8"
+}

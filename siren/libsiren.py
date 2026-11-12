@@ -41,18 +41,30 @@ def const(n):
   return Const(n)
 
 # times(Num, Num)
-def times(n1,n2):
-  return Mul(n1,n2)
+def times(n1, n2):
+  return Mul.make(n1, n2)
+
+
+def div(n1, n2):
+  return Div.make(n1, n2)
+
+
+def add(n1, n2):
+  return Add.make(n1, n2)
+
+
+def sub(left, right):
+  return Add.make(left, Mul.make(Const(-1), right))
   
 # Compatibility name emitted by compiled programs.
 def ex_mul(n1, n2):
   return times(n1, n2)
 
-def div(n1,n2):
-  return Div(n1,n2)
-
-def add(n1,n2):
-  return Add(n1,n2)
+# def div(n1,n2):
+#   return Div(n1,n2)
+#
+# def add(n1,n2):
+#   return Add(n1,n2)
 
 def beta(val1,val2):
   return Beta(val1,val2)
@@ -87,10 +99,12 @@ def assume(particle, distr):
 
 #sample(particle,distr)
 def sample(particle, distr):
-  # print("Available methods in SSIState:", dir(particle.state))
-  # print("particel",particle)
-  # print("distr", distr)
-  return particle.state.assume(None, None, distr)
+  # Unlike assume(), a sample site must realize its random variable.
+  distr = particle.state.eval_distr(distr)
+  if not distr.rvs():
+    return const(distr.draw(particle.state.rng))
+  rv = particle.state.assume(None, None, distr)
+  return particle.state.value_impl(rv)
 
 # observe(Particle, Distr, Val)
 def observe(particle, distr, val):
@@ -127,6 +141,12 @@ def list_tl(val):
 def list_rev(val):
   return val[::-1]
 
+def get_a(distr):
+    return distr.a
+
+def get_b(distr):
+  return distr.b
+
 def list_map(particle, func, values):
   return [func(particle, item) for item in values]
 
@@ -156,8 +176,8 @@ def get_par(particle, rv, idx):
   assert parents, f"{rv} has no parents; distr = {particle.state.distr(rv)}"
   return parents[idx.v]
 
-def sub(left, right):
-    return Add(left, Mul(Const(-1), right))
+# def sub(left, right):
+#     return Add(left, Mul(Const(-1), right))
 
 
 # set_distr(Particle, RV, Distr)

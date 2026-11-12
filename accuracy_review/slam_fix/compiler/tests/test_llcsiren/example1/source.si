@@ -1,0 +1,2 @@
+let x <- gaussian(0,1) in
+x

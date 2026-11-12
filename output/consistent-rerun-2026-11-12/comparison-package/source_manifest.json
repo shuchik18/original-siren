@@ -1,0 +1,19 @@
+{
+  "siren_and_sirenc_source": "/Users/skundaliya/Documents/libsiren/original-siren/output/consistent-rerun-2026-11-12/raw.csv",
+  "successful_runs": 290,
+  "repetitions": 5,
+  "particles": [
+    1,
+    10,
+    100,
+    1000
+  ],
+  "wheels_particles": [
+    1
+  ],
+  "all_eight_models_fresh": true,
+  "coreppl_rerun": false,
+  "coreppl_policy": "Existing measurements retained at explicit user request",
+  "coreppl_sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61",
+  "source_validation": "/Users/skundaliya/Documents/libsiren/original-siren/output/consistent-rerun-2026-11-12/source_validation.json"
+}

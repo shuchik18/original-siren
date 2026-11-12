@@ -1,0 +1,78 @@
+Functions that are added:
+Interface.py
+SymState
+Abs_new_var(int) - RandomVar
+Abs_get_entry(rv,str) - Any
+abs_pv(rv) - Identifier
+abs_set_annotation(rv,annotation) - None
+Abs_distr(rv) - Distr
+abs_set_entry(rv) - None
+Abs_set_distr(rv,distr) - None
+abs_set_pv(rv,identifier) - None
+set_dynamic(rv) - None
+entry_rename_rv(rv,oldrv,newrv) - None
+entry_join(rv,state) -None
+unify(expr,expr,state) - tuple
+join(state) -None
+join_distr(distr,distr,state) - Distr
+narrow_join_expr(expr,expr,state) - Expr
+join_expr(expr,expr,state) - Expr
+abs_ex_add(expr[number],expr[number]) - Expr
+abs_ex_mul(expr[number],expr[number]) - Expr
+abs_ex_div(expr[number],expr[number]) - Expr
+abs_ex_ite(boolean,expr,expr) - Expr
+abs_ex_eq(expr,expr) - Expr[boolean]
+abs_ex_lt(expr[number],expr[number]) - Expr[boolean]
+Abs_eval(expr) - Expr
+abs_eval_distr(distr) - Distr
+abs_value(rv) - Const
+rename(expr,oldrv,newrv) - None
+
+
+SSI file :
+assume(rv,identifier,annotation,distribution) - RandomVar
+value_impl(rv) - Const
+marginalize(rv) - None
+abs_parents(rv) - List[RandomVar]
+Abs_intervene(rv,delta) - None
+Hoist(rv) - None
+hoist_and_eval(rv) - None
+
+
+
+
+functions that are merged:
+Interface file:
+Symstate
+ex_add(expr[number],expr[number]) - Expr
+ex_mul(expr[number],expr[number]) - Expr
+ex_div(expr[number],expr[number]) - Expr
+ex_ite(bool,expr,expr) - Expr
+ex_eq(expr[number],expr[number]) - Expr[boolean]
+ex_it(expr[number],expr[number]) - Expr[boolean]
+Eval(expr) - Expr
+Eval_distr(distr) - Distr
+
+
+
+SSI file:
+Assume(identifier,annotation,distribution) - RandomVar
+Value(rv) - const
+Marginalize(rv) - it returns nothing none
+Score(rv) - float
+Hoist(rv,rv) - Callable Expr
+Hoist_and_eval(expr,rv) - Callable Expr
+
+
+
+functions that are to be add in the case in old siren:
+get_par(rv, int) - rv
+swap(rv,rv) - boolean
+new_var(rv) - random variable
+set_distr(rv,distr) - do not return anything
+get_distr(rv) - random var
+finalize(rv) - random variable
+
+
+
+#also write the parameter types

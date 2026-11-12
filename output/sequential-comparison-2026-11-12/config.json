@@ -1,0 +1,39 @@
+{
+  "models": [
+    "gaussian-gaussian",
+    "gtree",
+    "kalman",
+    "coin",
+    "gaussian-gaussian-hybrid",
+    "wheels"
+  ],
+  "particles": [
+    10,
+    100,
+    1000
+  ],
+  "repeats": 5,
+  "wheels_particles": [
+    1
+  ],
+  "wheels_repeats": 3,
+  "base_seed": 1234,
+  "order": "Siren first on even repetitions; SirenC first on odd repetitions",
+  "parallel_workers": 1,
+  "warmups_per_worker": 1,
+  "timing": "particle creation + inference + weighted posterior mean; startup/imports/parsing excluded",
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "initial_load_average": [
+    1.9013671875,
+    2.35693359375,
+    2.623046875
+  ],
+  "started_utc": "2026-11-12T14:00:17Z",
+  "environment_note": "No competing Python benchmark workers observed before launch; normal apps and OS services remain active."
+}

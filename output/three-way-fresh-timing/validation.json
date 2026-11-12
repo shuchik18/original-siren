@@ -1,0 +1,14 @@
+{
+  "fresh_groups_checked": 42,
+  "all_fresh_medians_and_errors_match": true,
+  "prior_156_runs_preserved": true,
+  "additional_particle_one_runs": 50,
+  "coreppl_unchanged": true,
+  "matched_points": 93,
+  "all_points": 102,
+  "historical_models": [
+    "outlier",
+    "slam"
+  ],
+  "source_repositories_modified": false
+}

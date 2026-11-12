@@ -1,0 +1,5 @@
+-- Siren gaussian(mu, variance) -> CorePPL Gaussian mu (sqrt variance).
+mexpr
+let x = assume (Gaussian 0.0 (sqrt 10.0)) in
+observe 3.0 (Gaussian x 1.0);
+x

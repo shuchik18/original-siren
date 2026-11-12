@@ -1,0 +1,12 @@
+include "seq.mc"
+
+-- Siren List.range(1, 10) excludes 10. Keep the fold; do not use peval.
+let makeObs = lam previous. lam obs.
+  let x = assume (Gaussian previous 1.0) in
+  observe (int2float obs) (Gaussian x 1.0);
+  x
+
+mexpr
+let data = create 9 (lam i. addi i 1) in
+let initial = assume (Gaussian 0.0 10.0) in
+foldl makeObs initial data

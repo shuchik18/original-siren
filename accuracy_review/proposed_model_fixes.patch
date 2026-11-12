@@ -1,0 +1,152 @@
+--- a/siren/libsiren.py
++++ b/siren/libsiren.py
+@@ -99,10 +99,13 @@
+ 
+ #sample(particle,distr)
+ def sample(particle, distr):
+-  # print("Available methods in SSIState:", dir(particle.state))
+-  # print("particel",particle)
+-  # print("distr", distr)
+-  return particle.state.assume(None, None, distr)
++  # A sample site must return a realized value, unlike a symbolic assume site.
++  rv = particle.state.assume(None, None, distr)
++  return particle.state.value_impl(rv)
++
++def truth(particle, expr):
++  """Evaluate a generated Python branch using its value, not object identity."""
++  return bool(particle.state.value_expr(expr).v)
+ 
+ # observe(Particle, Distr, Val)
+ def observe(particle, distr, val):
+@@ -202,5 +205,3 @@
+   v = particle.state.value_expr(num)
+   s = particle.state.observe(rv, v)
+   particle.score += s
+-
+-
+--- a/examples/libsiren-examples/outlier-compiled.py
++++ b/examples/libsiren-examples/outlier-compiled.py
+@@ -1,38 +1,25 @@
+ from siren.libsiren import *
+ 
+ def new_make_obs1(particle, obs, x_pre):
+-  rv3 = new_rv(particle)
+-  set_distr(particle, rv3, bernoulli(const(0.9)))
+-  set_distr(particle, rv3, bernoulli(const(0.9)))
+-  set_distr(particle, rv3, bernoulli(const(0.9)))
+-  S5 = sample(particle, get_distr(particle, rv3))
+-  set_distr(particle, rv3, delta(S5))
+-  out = S5
+-  if out:
+-    rv6 = new_rv(particle)
+-    set_distr(particle, rv6, gaussian(x_pre, const(1.0)))
+-    x = rv6
+-    rv8 = new_rv(particle)
+-    set_distr(particle, rv8, gaussian(x, const(1.0)))
+-    set_distr(particle, rv8, gaussian(x, const(1.0)))
+-    set_distr(particle, get_par(particle, get_par(particle, rv8, const(0)), const(0)), gaussian(times(get_par(particle, rv8, const(0)), const(0.9900990099009901)), const(0.9900990099009901)))
+-    set_distr(particle, get_par(particle, rv8, const(0)), gaussian(const(0.0), const(101.0)))
+-    set_distr(particle, get_par(particle, rv8, const(0)), gaussian(times(rv8, const(0.9901960784313726)), const(0.9901960784313726)))
+-    set_distr(particle, rv8, gaussian(const(0.0), const(102.0)))
+-    set_distr(particle, rv8, gaussian(const(0.0), const(102.0)))
+-    observe_inner(particle, rv8, obs)
+-    __siren_tmp_1 = x
++  # Runtime branch and loop-carried parameters cannot be specialized to the
++  # first iteration's N(0, 100) prior. Apply the scalar conjugate update using
++  # the current posterior instead.
++  out = sample(particle, bernoulli(const(0.9)))
++  prior = particle.state.eval_distr(get_distr(particle, x_pre))
++  mean = get_mu(prior).v
++  variance = get_var(prior).v + 1.0
++  x = new_rv(particle)
++  if truth(particle, out):
++    innovation = variance + 1.0
++    gain = variance / innovation
++    posterior_mean = mean + gain * (obs.v - mean)
++    posterior_variance = variance / innovation
++    observe(particle, gaussian(const(mean), const(innovation)), obs)
++    set_distr(particle, x, gaussian(const(posterior_mean), const(posterior_variance)))
+   else:
+-    rv14 = new_rv(particle)
+-    set_distr(particle, rv14, gaussian(x_pre, const(1.0)))
+-    x = rv14
+-    rv16 = new_rv(particle)
+-    set_distr(particle, rv16, gaussian(const(0.0), const(100.0)))
+-    set_distr(particle, rv16, gaussian(const(0.0), const(100.0)))
+-    set_distr(particle, rv16, gaussian(const(0.0), const(100.0)))
+-    observe_inner(particle, rv16, obs)
+-    __siren_tmp_1 = x
+-  return __siren_tmp_1
++    observe(particle, gaussian(const(0.0), const(100.0)), obs)
++    set_distr(particle, x, gaussian(const(mean), const(variance)))
++  return x
+ 
+ def program(particle):
+   data = list_range(1, 10)
+--- a/examples/libsiren-examples/slam-compiled.py
++++ b/examples/libsiren-examples/slam-compiled.py
+@@ -6,34 +6,25 @@
+   cell = rv1
+   return cell
+ 
+-def new_make_obs1(particle, __siren_tmp_1, __siren_tmp_2):
+-  (obs, cmd) = __siren_tmp_1
+-  (max_pos, map, xs) = __siren_tmp_2
+-  prev_x = const(0.0)
+-  sensor_noise = const(0.1)
+-  wheel_noise = const(0.1)
+-  rv5 = new_rv(particle)
+-  set_distr(particle, rv5, bernoulli(wheel_noise))
+-  set_distr(particle, rv5, bernoulli(const(0.1)))
+-  set_distr(particle, rv5, bernoulli(const(0.1)))
+-  S7 = sample(particle, get_distr(particle, rv5))
+-  set_distr(particle, rv5, delta(S7))
+-  wheel_slip = S7
+-  cmd2 = cmd
+-  x = (prev_x if wheel_slip else add(prev_x, cmd2))
+-  x_2 = x
+-  c0 = list_hd(map)
+-  c1 = list_hd(list_tl(map))
+-  o = (c0 if eq(x_2, const(0.0)) else c1)
+-  rv9 = new_rv(particle)
+-  set_distr(particle, rv9, bernoulli(ifelse(o, sub(const(1.0), sensor_noise), sensor_noise)))
+-  set_distr(particle, rv9, bernoulli(get_p(get_distr(particle, rv9))))
+-  __siren_update_marginal_11 = bernoulli(add(times(get_p(get_distr(particle, get_par(particle, rv9, const(0)))), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(True))), times(const(0.5), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(False)))))
+-  set_distr(particle, get_par(particle, rv9, const(0)), bernoulli(div(times(get_p(get_distr(particle, get_par(particle, rv9, const(0)))), subst_rv(ifelse(rv9, get_p(get_distr(particle, rv9)), add(const(1.0), times(sub(const(0.0), const(1.0)), get_p(get_distr(particle, rv9))))), get_par(particle, rv9, const(0)), const(True))), ifelse(rv9, add(times(get_p(get_distr(particle, get_par(particle, rv9, const(0)))), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(True))), times(const(0.5), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(False)))), add(const(1.0), times(sub(const(0.0), const(1.0)), add(times(get_p(get_distr(particle, get_par(particle, rv9, const(0)))), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(True))), times(const(0.5), subst_rv(get_p(get_distr(particle, rv9)), get_par(particle, rv9, const(0)), const(False))))))))))
+-  set_distr(particle, rv9, __siren_update_marginal_11)
+-  set_distr(particle, rv9, bernoulli(get_p(get_distr(particle, rv9))))
+-  observe_inner(particle, rv9, obs)
+-  return pair(max_pos, pair(map, cons(x_2, xs)))
++def new_make_obs1(particle, observation_command, accumulator):
++  obs, cmd = observation_command
++  max_pos, cells, xs = accumulator
++  previous = 0.0 if not xs else particle.state.value_expr(xs[0]).v
++  slip = sample(particle, bernoulli(const(0.1)))
++  target = previous + cmd.v
++  command = cmd.v if 0 <= target <= max_pos.v else 0.0
++  position = previous if truth(particle, slip) else previous + command
++  cell = cells[0 if position == 0 else 1]
++  prior = particle.state.eval_distr(get_distr(particle, cell)).p.v
++  # Condition the selected map cell on the actual observation. Both mixture
++  # terms use its current prior, including when a cell is revisited.
++  observed = bool(obs.v)
++  likelihood_true = 0.9 if observed else 0.1
++  likelihood_false = 1.0 - likelihood_true
++  evidence = prior * likelihood_true + (1.0 - prior) * likelihood_false
++  observe(particle, bernoulli(const(evidence)), const(True))
++  set_distr(particle, cell, bernoulli(const(prior * likelihood_true / evidence)))
++  return pair(max_pos, pair(cells, cons(const(position), xs)))
+ 
+ def program(particle):
+   data = cons(pair(const(0.0), const(1.0)), cons(pair(const(0.0), const(-1.0)), lst()))
+--- a/examples/libsiren-examples/gaussian-gaussian-hybrid-compiled.py
++++ b/examples/libsiren-examples/gaussian-gaussian-hybrid-compiled.py
+@@ -12,7 +12,7 @@
+   rv4 = new_rv(particle)
+   set_distr(particle, rv4, gaussian(const(0.0), const(10.0)))
+   x = rv4
+-  if b:
++  if truth(particle, b):
+     rv6 = new_rv(particle)
+     set_distr(particle, rv6, gaussian(x, const(1.0)))
+     set_distr(particle, rv6, gaussian(get_mu(get_distr(particle, rv6)), get_var(get_distr(particle, rv6))))

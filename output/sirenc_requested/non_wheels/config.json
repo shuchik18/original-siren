@@ -1,0 +1,21 @@
+{
+  "benchmarks": [
+    "gaussian-gaussian",
+    "gtree",
+    "kalman",
+    "slam",
+    "outlier",
+    "coin",
+    "gaussian-gaussian-hybrid"
+  ],
+  "particles": [
+    1,
+    10,
+    100,
+    1000,
+    10000
+  ],
+  "repeats": 5,
+  "seed": 1234,
+  "timeout": 120
+}

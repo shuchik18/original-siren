@@ -1,0 +1,14 @@
+{
+  "compiler_root": "/Users/skundaliya/Documents/SirenC/SirenC",
+  "regenerated_matches_active_slam": true,
+  "compiler_source_hashes": {
+    "siren/evaluate.py": "e3c9e8351834b0f074161229dbe15e47fd1356682bbab82817afce0acb14a4ad",
+    "llcsiren/src/compiler.py": "60dbdff08ae1175746334da6f2613024408ac9d0907f0529f60ef67118241021",
+    "siren/compiler/conjugate.py": "700fae507cff64d60af2966ca4ff2db3e38a95d74ca68e5ed41bd1cdb264f2a3",
+    "siren/compiler/interface.py": "9996352042a49720e8620eeea27cc66577022c5d845f6c405237aa61d3f91a5e",
+    "tests/test_llcsiren/slam-example/source.si": "c356e9af6af8c7d745d0ce9bc056af5abbe786ecc04afaeaffd9f60c957a999c"
+  },
+  "regenerated_python_sha256": "d47b800f6229ec3a2280c371b49a1ae07643a8345fec31a7e168478ae94ac6be",
+  "interface_unchanged": true,
+  "simplify_observed_present": false
+}

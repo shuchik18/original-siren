@@ -1,0 +1,61 @@
+{
+  "protocol": "siren-comparison-v1",
+  "benchmarks": [
+    "gaussian-gaussian",
+    "gtree",
+    "kalman",
+    "wheels",
+    "slam",
+    "outlier",
+    "coin",
+    "gaussian-gaussian-hybrid"
+  ],
+  "particles_by_benchmark": {
+    "gaussian-gaussian": [
+      1,
+      10,
+      100
+    ],
+    "gtree": [
+      1,
+      10,
+      100
+    ],
+    "kalman": [
+      1,
+      10,
+      100
+    ],
+    "wheels": [
+      1
+    ],
+    "slam": [
+      1,
+      10,
+      100
+    ],
+    "outlier": [
+      1,
+      10,
+      100
+    ],
+    "coin": [
+      1,
+      10,
+      100
+    ],
+    "gaussian-gaussian-hybrid": [
+      1,
+      10,
+      100
+    ]
+  },
+  "repeats": 5,
+  "seed": 1234,
+  "timeout": 120,
+  "wheels_timeout": null,
+  "warmups_per_repetition": 1,
+  "seed_policy": "SeedSequence child streams per particle",
+  "timing_policy": "particle creation + execution + weighted mean",
+  "estimator": "weighted symbolic component means"
+}

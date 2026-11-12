@@ -1,0 +1,19 @@
+include "seq.mc"
+
+-- Preserve the branch-local transition, observation order, and fold.
+-- Siren's explicitly sampled indicator is needed for this stochastic branch.
+let makeObs = lam previous. lam obs.
+  let out = assume (Bernoulli 0.9) in
+  if out then
+    let x = assume (Gaussian previous 1.0) in
+    observe (int2float obs) (Gaussian x 1.0);
+    x
+  else
+    let x = assume (Gaussian previous 1.0) in
+    observe (int2float obs) (Gaussian 0.0 10.0);
+    x
+
+mexpr
+let data = create 9 (lam i. addi i 1) in
+let initial = assume (Gaussian 0.0 10.0) in
+foldl makeObs initial data

@@ -1,0 +1,27 @@
+let input = 0.0 in
+let rv1 = Prob.new_var() in
+let () = Prob.set_distr(rv1,bernoulli(0.5)) in
+let () = Prob.set_lookup("b",rv1) in
+let () = Prob.set_distr(rv1,bernoulli(Prob.get_p(Prob.get_distr(rv1)))) in
+let () = Prob.set_distr(rv1,bernoulli(Prob.get_p(Prob.get_distr(rv1)))) in
+let sample S3 <- Prob.get_distr(rv1) in
+let () = Prob.set_distr(rv1,delta(S3)) in
+let b = S3 in
+let rv4 = Prob.new_var() in
+let () = Prob.set_distr(rv4,gaussian(0.0,10.0)) in
+let () = Prob.set_lookup("x",rv4) in
+let x = rv4 in
+let () = if b then let rv6 = Prob.new_var() in
+let () = Prob.set_distr(rv6,gaussian(x,1.0)) in
+let () = Prob.set_distr(rv6,gaussian(Prob.get_mu(Prob.get_distr(rv6)),Prob.get_var(Prob.get_distr(rv6)))) in
+let () = Prob.set_distr(rv6,gaussian(Prob.get_mu(Prob.get_distr(rv6)),Prob.get_var(Prob.get_distr(rv6)))) in
+let () = Prob.set_distr(Prob.get_par(rv6,0),gaussian((rv6 * 0.9090909090909091), 0.9090909090909091)) in
+let () = Prob.set_distr(rv6,gaussian(0.0, 11.0)) in
+let () = Prob.observe_inner(rv6,input) in
+Prob.null() else let rv9 = Prob.new_var() in
+let () = Prob.set_distr(rv9,gaussian(0.0,100.0)) in
+let () = Prob.set_distr(rv9,gaussian(Prob.get_mu(Prob.get_distr(rv9)),Prob.get_var(Prob.get_distr(rv9)))) in
+let () = Prob.set_distr(rv9,gaussian(Prob.get_mu(Prob.get_distr(rv9)),Prob.get_var(Prob.get_distr(rv9)))) in
+let () = Prob.observe_inner(rv9,input) in
+Prob.null() in
+Prob.finalize(x)

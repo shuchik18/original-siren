@@ -1,0 +1,42 @@
+[
+  {
+    "input_file": "data/coreppl_posterior_summary.csv",
+    "rows": 64,
+    "sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61"
+  },
+  {
+    "input_file": "data/coreppl_summary.csv",
+    "rows": 64,
+    "sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61"
+  },
+  {
+    "input_file": "data/historical_siren_raw.csv",
+    "rows": 190,
+    "sha256": "19883f68633f7872fcbce744d1b568de87aa5a3245dcd8f20b56fe7330e62df9"
+  },
+  {
+    "input_file": "data/historical_sirenc_raw.csv",
+    "rows": 190,
+    "sha256": "011aca3a210bfe524d1c7881124a25479bc842f7d5c5215e97eefb1a0bfc7c96"
+  },
+  {
+    "input_file": "data/particle_one_raw.csv",
+    "rows": 50,
+    "sha256": "abcad5dacbd429239546f521ad5074d5e5b1ab46d188d282a362445c0b3bc547"
+  },
+  {
+    "input_file": "data/sequential_raw.csv",
+    "rows": 206,
+    "sha256": "e9e2d352a004259e35179c8994239b24bad24c69e0ad0b9c354029f92945a2a5"
+  },
+  {
+    "input_file": "data/siren_raw.csv",
+    "rows": 153,
+    "sha256": "749bace4fd7a48ebc74cf3bb677095b60ab84630968cbfc1a5e06b4db9e2cc90"
+  },
+  {
+    "input_file": "data/sirenc_raw.csv",
+    "rows": 153,
+    "sha256": "15a0fcb4b28fca070c32f170e95e9a11821434c760ee39f6a7807b734a5bd314"
+  }
+]

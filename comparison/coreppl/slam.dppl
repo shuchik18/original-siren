@@ -1,0 +1,41 @@
+include "seq.mc"
+
+-- CorePPL has no equivalent of Siren's symbolic assertion on cell.
+let bernoulliPriors = lam i. assume (Bernoulli 0.5)
+
+let move = lam maxPos. lam previous. lam cmd.
+  let wheelNoise = 0.1 in
+  let wheelSlip = assume (Bernoulli wheelNoise) in
+  let cmd2 =
+    if lti (addi previous cmd) 0 then 0
+    else if lti maxPos (addi previous cmd) then 0
+    else cmd
+  in
+  if wheelSlip then previous else addi previous cmd2
+
+-- The original get selects between the first two cells.
+let getCell = lam cells. lam n.
+  let c0 = head cells in
+  let c1 = head (tail cells) in
+  if eqi n 0 then c0 else c1
+
+let step = lam state. lam entry.
+  let maxPos = state.0 in
+  let cells = state.1 in
+  let xs = state.2 in
+  let obs = entry.0 in
+  let cmd = entry.1 in
+  let previous = if eqi (length xs) 0 then 0 else head xs in
+  let sensorNoise = 0.1 in
+  let x = move maxPos previous cmd in
+  let o = getCell cells x in
+  -- Siren's Bernoulli score interprets integer zero as false.
+  observe (neqi obs 0) (Bernoulli (if o then subf 1.0 sensorNoise else sensorNoise));
+  (maxPos, cells, cons x xs)
+
+mexpr
+let data = [(0, 1), (0, -1)] in
+let maxPos = 1 in
+let cells = map bernoulliPriors (create (addi maxPos 1) (lam i. i)) in
+let result = foldl step (maxPos, cells, []) data in
+(result.1, reverse result.2)

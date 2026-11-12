@@ -1,0 +1,27 @@
+[
+  {
+    "input_file": "data/coreppl_posterior_summary.csv",
+    "rows": 64,
+    "sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61"
+  },
+  {
+    "input_file": "data/coreppl_summary.csv",
+    "rows": 64,
+    "sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61"
+  },
+  {
+    "input_file": "data/sequential_raw.csv",
+    "rows": 290,
+    "sha256": "bb046f874e896099851727148506c8cbbce77f0a5776a4d26d50c87a75c94c21"
+  },
+  {
+    "input_file": "data/siren_raw.csv",
+    "rows": 145,
+    "sha256": "03335a628396c5ae0892f696d3cade8f54295ec97c4e7238e6b594f3a73968b5"
+  },
+  {
+    "input_file": "data/sirenc_raw.csv",
+    "rows": 145,
+    "sha256": "1e4589a6d2cd11a007f9c149ca91235799717cea87d706578e633f1e48ee9140"
+  }
+]

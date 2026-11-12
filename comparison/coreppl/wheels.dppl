@@ -1,0 +1,32 @@
+include "seq.mc"
+
+let preprocessData = lam entry. (head entry, head (tail entry))
+
+-- Static delayed sampling supplies the symbolic treatment: CorePPL has no
+-- equivalent of Siren's "symbolic" assertion. Any forced draws are audited
+-- in the generated model. Preserve the loop and both observation sites.
+let step = lam state. lam entry.
+  match state with (start, vs, os) in
+  match entry with (leftWheelRate, rightWheelRate) in
+  let previousO = head os in
+  let previousV = head vs in
+  let wb = 2.0 in
+  let omegaNoise = if start then 2500.0 else 1.0 in
+  let velocityNoise = if start then 2500.0 else 1.0 in
+  let omega = assume (Gaussian previousO (sqrt omegaNoise)) in
+  let velocity = assume (Gaussian previousV (sqrt velocityNoise)) in
+  observe leftWheelRate (Gaussian (subf velocity (mulf wb omega)) 1.0);
+  observe rightWheelRate (Gaussian (addf velocity (mulf wb omega)) (sqrt 0.95));
+  (false, cons velocity vs, cons omega os)
+
+mexpr
+let data = [[201.79897693, -32.779256728],
+            [206.423095274, -31.9258541027],
+            [207.900486767, -31.5701198412],
+            [210.298303206, -32.0217383347],
+            [206.010088006, -31.3001236526],
+            [207.230561559, -35.9919009388],
+            [207.802456076, -34.6068500903]] in
+match foldl step (true, [0.0], [0.0]) (map preprocessData data)
+  with (_, vs, os) in
+(tail (reverse vs), tail (reverse os))

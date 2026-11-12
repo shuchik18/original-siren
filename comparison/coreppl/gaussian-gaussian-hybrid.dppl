@@ -1,0 +1,11 @@
+-- Direct translation: retain the sampled branch, shared x, and observation order.
+-- Siren's Gaussian second argument is variance; CorePPL's is standard deviation.
+mexpr
+let input = 0.0 in
+let b = assume (Bernoulli 0.5) in
+let x = assume (Gaussian 0.0 (sqrt 10.0)) in
+let unused = if b then
+  observe input (Gaussian x 1.0)
+else
+  observe input (Gaussian 0.0 10.0)
+in x

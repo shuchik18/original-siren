@@ -13,8 +13,9 @@ def step(particle, __siren_tmp_1, __siren_tmp_2):
   wb = const(2.0)
   sensor_err_l = const(1.0)
   sensor_err_r = const(0.95)
-  omega_noise = (const(2500.0) if start else const(1.0))
-  velocity_noise = (const(2500.0) if start else const(1.0))
+  is_start = particle.state.value_expr(start).v
+  omega_noise = (const(2500.0) if is_start else const(1.0))
+  velocity_noise = (const(2500.0) if is_start else const(1.0))
   omega = assume(particle, gaussian(prev_o, omega_noise))
   velocity = assume(particle, gaussian(prev_v, velocity_noise))
   observe(particle, gaussian(sub(velocity, times(wb, omega)), sensor_err_l), left_wheel_rate)

@@ -1,0 +1,243 @@
+what is the value of the rv in the set_distr rv1
+what is the value of the distribution in the set_distr bernoulli(0.5)
+abs rv1 in the abs_set_distr RV(rv2)
+distribution in the abs_set_distr Bernoulli(0.5)
+abs rv in the set distr function  RV(rv2)
+abs distr in the set distr function  Bernoulli(0.5)
+the value of the rv1 RV(rv2)
+value of the rv rv1
+what is the value of the rv in the set_distr rv3
+what is the value of the distribution in the set_distr bernoulli(0.5)
+abs rv1 in the abs_set_distr RV(rv4)
+distribution in the abs_set_distr Bernoulli(0.5)
+abs rv in the set distr function  RV(rv4)
+abs distr in the set distr function  Bernoulli(0.5)
+the value of the rv1 RV(rv4)
+value of the rv rv3
+what is the value of the rv in the set_distr rv5
+what is the value of the distribution in the set_distr bernoulli(wheel_noise)
+abs rv1 in the abs_set_distr RV(rv6)
+distribution in the abs_set_distr Bernoulli(0.1)
+abs rv in the set distr function  RV(rv6)
+abs distr in the set distr function  Bernoulli(0.1)
+the value of the rv1 RV(rv6)
+value of the rv rv5
+rv in assume rv5
+bas_rv in the hoist and eval RV(rv6)
+distr Prob.get_distr(rv5)
+eval_val in hoist and eval...... bernoulli(0.1)
+abs_eval_val in hoist and eval...... Bernoulli(0.1)
+what is the value of the rv in the set_distr rv5
+what is the value of the distribution in the set_distr bernoulli(0.1)
+abs rv in the set distr function  RV(rv6)
+abs distr in the set distr function  Bernoulli(0.1)
+--------------------------------------end-hoist inner----------------------------------------------
+--------------------------------------start-hoist inner----------------------------------------------
+rv..... rv5
+abs_rv..... RV(rv6)
+old_abs_parents []
+----------------hoist inside the topo sort------------------
+nodes []
+abs_parents []
+value of abs_parents
+-------------
+[]
+----------
+---------------hoist inner return func----------------
+None
+----------------------------------
+distr Prob.get_distr(rv5)
+what is the value of the rv in the set_distr rv5
+what is the value of the distribution in the set_distr bernoulli(0.1)
+abs rv in the set distr function  RV(rv6)
+abs distr in the set distr function  Bernoulli(0.1)
+the value of the val in the value function <function SSIState.hoist_and_eval.<locals>.kret_val at 0x1211b0f40>
+abs_v RV(rv6)
+rv in value rv5
+v in value S7
+intervene is  delta(S7)
+rv rv5
+what is the value of the rv in the set_distr rv5
+what is the value of the distribution in the set_distr delta(S7)
+absrv in absintervene RV(rv6)
+absintervene Delta(UnkC(), True)
+abs rv in the set distr function  RV(rv6)
+abs distr in the set distr function  Delta(UnkC(), True)
+val in value  <function SSIState.hoist_and_eval.<locals>.kret_val at 0x1211b0f40>
+k1 in value  <function SSIState.draw.<locals>.r2 at 0x121336200>
+k2 in value  <function SymState.set_distr.<locals>.k at 0x121353600>
+the value of the k   <function SSIState.value.<locals>.k at 0x121350d60>
+distr in assume S7
+absdistr in assume UnkC()
+args in the list [map]
+new args in the list before convert args [map, AbsLst(exprs=[AbsRandomVar(rv='rv2'), AbsRandomVar(rv='rv4')])]
+old args in the list []
+new_args in hd (map, [RV(rv2); RV(rv4)])
+value of the new_args1 in the evaluate list.hd map
+value of the abs_exprs in the evaluate list.hd [AbsRandomVar(rv='rv2'), AbsRandomVar(rv='rv4')]
+args in the list [Apply(func=List.tl, args=[map])]
+new args in the list before convert args [Apply(func=List.tl, args=[map]), AbsLst(exprs=[AbsRandomVar(rv='rv4')])]
+old args in the list []
+new_args in hd (List.tl(map), [RV(rv4)])
+value of the new_args1 in the evaluate list.hd List.tl(map)
+value of the abs_exprs in the evaluate list.hd [AbsRandomVar(rv='rv4')]
+distrbution in observe bernoulli(if o then sub(1.0,sensor_noise) else sensor_noise)
+abs distribution in observe Bernoulli(if RV(rv2) then (1.0 + (-1 * 0.1)) else 0.1)
+val in observe.............................. obs
+abs_val in observe........................... 0.0
+what is the value of the rv in the set_distr rv9
+what is the value of the distribution in the set_distr bernoulli(if o then sub(1.0,sensor_noise) else sensor_noise)
+abs rv1 in the abs_set_distr RV(rv10)
+distribution in the abs_set_distr Bernoulli(if RV(rv2) then (1.0 + (-1 * 0.1)) else 0.1)
+abs rv in the set distr function  RV(rv10)
+abs distr in the set distr function  Bernoulli(if RV(rv2) then (1.0 + (-1 * 0.1)) else 0.1)
+----------------------------------In observe func-------------------------------------
+<function SSIState.assume.<locals>.r at 0x1214993a0>
+rv9
+RV(rv10)
+----------------------------------end In observe func-------------------------------------
+inside value expr
+expr in val_expr obs
+abs_expr in val_expr 0.0
+enter absconst in value expr
+abs val in observe......................... 0.0
+v in observe .............................. obs
+bas_rv in the hoist and eval RV(rv10)
+distr Prob.get_distr(rv9)
+abs rv in the set distr function  RV(rv2)
+abs distr in the set distr function  Bernoulli(0.5)
+eval_val in hoist and eval...... bernoulli(Prob.get_p(Prob.get_distr(rv9)))
+abs_eval_val in hoist and eval...... Bernoulli(if RV(rv2) then 0.9 else 0.1)
+what is the value of the rv in the set_distr rv9
+what is the value of the distribution in the set_distr bernoulli(Prob.get_p(Prob.get_distr(rv9)))
+abs rv in the set distr function  RV(rv10)
+abs distr in the set distr function  Bernoulli(if RV(rv2) then 0.9 else 0.1)
+--------------------------------------end-hoist inner----------------------------------------------
+--------------------------------------start-hoist inner----------------------------------------------
+rv..... rv9
+abs_rv..... RV(rv10)
+old_abs_parents [AbsRandomVar(rv='rv2')]
+----------------hoist inside the topo sort------------------
+parents  []
+nodes []
+abs_parents [AbsRandomVar(rv='rv2')]
+value of abs_parents
+-------------
+[AbsRandomVar(rv='rv2')]
+----------
+value in hoist_inner RV(rv2)
+idx in hoist inner 0
+old_abs_parents with idx RV(rv2)
+--------------------------------------start-hoist inner----------------------------------------------
+rv..... Prob.get_par(rv9,0)
+abs_rv..... RV(rv2)
+old_abs_parents []
+----------------hoist inside the topo sort------------------
+nodes []
+abs_parents []
+value of abs_parents
+-------------
+[]
+----------
+k in hoist inner <function SSIState.hoist.<locals>._hoist_inner.<locals>.k4 at 0x12149a340>
+k_update [<function SSIState.hoist.<locals>._hoist_inner.<locals>.k_rest at 0x12149a3e0>]
+abs [AbsRandomVar(rv='rv2')]
+idx 0
+parent RV(rv2)
+old parents  RV(rv2)
+val of old idx and abs parents
+---------------------
+[AbsRandomVar(rv='rv2')]
+RV(rv2)
+0
+RV(rv2)
+RV(rv2)
+RV(rv10)
+set()
+----------------------
+rv is  rv9
+what is the idx 0
+val rv of the parent Prob.get_par(rv9,0)
+========before swap
+val_rv_par Prob.get_par(rv9,0)
+rv rv9
+rv distr Prob.get_distr(rv9)
+parent RV(rv2)
+parent distr Bernoulli(0.5)
+abs_rv RV(rv10)
+abs_rv distr Bernoulli(if RV(rv2) then 0.9 else 0.1)
+=========
+------------In swap func ------------------
+rv_par Prob.get_par(rv9,0)
+rv_child rv9
+abs_rv_par RV(rv2)
+abs_rv_child RV(rv10)
+--------------
+bernoulli in swap
+rv_par Prob.get_par(rv9,0)
+rv_child rv9
+abs_rv_par RV(rv2)
+abs_rv_child RV(rv10)
+value of the p2 Prob.get_p(Prob.get_distr(rv9))
+value of the abs_p2 if RV(rv2) then 0.9 else 0.1
+value of the abs_p2 subset if true then 0.9 else 0.1
+abs_marginal_posterior (AbsBernoulli(p=AbsAdd(left=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=True), true=AbsConst(v=0.9), false=AbsConst(v=0.1))), right=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=False), true=AbsConst(v=0.9), false=AbsConst(v=0.1))))), AbsBernoulli(p=AbsDiv(left=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsRandomVar(rv='rv10'), true=AbsIte(cond=AbsConst(v=True), true=AbsConst(v=0.9), false=AbsConst(v=0.1)), false=AbsAdd(left=AbsConst(v=1), right=AbsMul(left=AbsConst(v=-1), right=AbsIte(cond=AbsConst(v=True), true=AbsConst(v=0.9), false=AbsConst(v=0.1)))))), right=AbsIte(cond=AbsRandomVar(rv='rv10'), true=AbsAdd(left=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=True), true=AbsConst(v=0.9), false=AbsConst(v=0.1))), right=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=False), true=AbsConst(v=0.9), false=AbsConst(v=0.1)))), false=AbsAdd(left=AbsConst(v=1), right=AbsMul(left=AbsConst(v=-1), right=AbsAdd(left=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=True), true=AbsConst(v=0.9), false=AbsConst(v=0.1))), right=AbsMul(left=AbsConst(v=0.5), right=AbsIte(cond=AbsConst(v=False), true=AbsConst(v=0.9), false=AbsConst(v=0.1))))))))))
+---------inside update swap----------
+-------start swap-----
+marginal bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))))
+posterior bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(if rv9 then Prob.get_p(Prob.get_distr(rv9)) else (1 + (sub(0,1) * Prob.get_p(Prob.get_distr(rv9)))),Prob.get_par(rv9,0),true)) / if rv9 then ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))) else (1 + (sub(0,1) * ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false)))))))
+marginal posterior (Bernoulli(p=Add(left=Mul(left=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[Apply(func=Prob.get_par, args=[rv9, Const(v=0)])])]), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=True)])), right=Mul(left=Const(v=0.5), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=False)])))), Bernoulli(p=Div(left=Mul(left=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[Apply(func=Prob.get_par, args=[rv9, Const(v=0)])])]), right=Apply(func=Prob.subst_rv, args=[IfElse(cond=rv9, then=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), else_=Add(left=Const(v=1), right=Mul(left=GenericOp(op=<Operator.sub: 2>, args=[Const(v=0), Const(v=1)]), right=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])])))), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=True)])), right=IfElse(cond=rv9, then=Add(left=Mul(left=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[Apply(func=Prob.get_par, args=[rv9, Const(v=0)])])]), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=True)])), right=Mul(left=Const(v=0.5), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=False)]))), else_=Add(left=Const(v=1), right=Mul(left=GenericOp(op=<Operator.sub: 2>, args=[Const(v=0), Const(v=1)]), right=Add(left=Mul(left=Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[Apply(func=Prob.get_par, args=[rv9, Const(v=0)])])]), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=True)])), right=Mul(left=Const(v=0.5), right=Apply(func=Prob.subst_rv, args=[Apply(func=Prob.get_p, args=[Apply(func=Prob.get_distr, args=[rv9])]), Apply(func=Prob.get_par, args=[rv9, Const(v=0)]), Const(v=False)])))))))))
+abs_posterior Bernoulli(((0.5 * if RV(rv10) then if true then 0.9 else 0.1 else (1 + (-1 * if true then 0.9 else 0.1))) / if RV(rv10) then ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)) else (1 + (-1 * ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1))))))
+abs_marginal Bernoulli(((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)))
+what is the value of the rv in the set_distr Prob.get_par(rv9,0)
+what is the value of the distribution in the set_distr bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(if rv9 then Prob.get_p(Prob.get_distr(rv9)) else (1 + (sub(0,1) * Prob.get_p(Prob.get_distr(rv9)))),Prob.get_par(rv9,0),true)) / if rv9 then ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))) else (1 + (sub(0,1) * ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false)))))))
+<function SymState.set_distr.<locals>.k at 0x121489bc0>
+----end swap-------
+what is the value of the rv in the set_distr Prob.get_par(rv9,0)
+what is the value of the distribution in the set_distr __siren_update_posterior_11
+what is the value of the rv in the set_distr rv9
+what is the value of the distribution in the set_distr __siren_update_marginal_11
+abs rv in the set distr function  RV(rv2)
+abs distr in the set distr function  Bernoulli(((0.5 * if RV(rv10) then if true then 0.9 else 0.1 else (1 + (-1 * if true then 0.9 else 0.1))) / if RV(rv10) then ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)) else (1 + (-1 * ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1))))))
+abs rv in the set distr function  RV(rv10)
+abs distr in the set distr function  Bernoulli(((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)))
+========after swap
+parent RV(rv2)
+conc_swap <function SSIState.hoist.<locals>._swap.<locals>._update.<locals>.par_distr at 0x1213e0d60>
+abs_swap True
+parent distr Bernoulli(((0.5 * if RV(rv10) then if true then 0.9 else 0.1 else (1 + (-1 * if true then 0.9 else 0.1))) / if RV(rv10) then ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)) else (1 + (-1 * ((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1))))))
+abs_rv RV(rv10)
+abs_rv distr Bernoulli(((0.5 * if true then 0.9 else 0.1) + (0.5 * if false then 0.9 else 0.1)))
+=========
+---------------hoist inner return func----------------
+let __siren_update_posterior_11 = bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(if rv9 then Prob.get_p(Prob.get_distr(rv9)) else (1 + (sub(0,1) * Prob.get_p(Prob.get_distr(rv9)))),Prob.get_par(rv9,0),true)) / if rv9 then ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))) else (1 + (sub(0,1) * ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))))))) in let __siren_update_marginal_11 = bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false)))) in let () = Prob.set_distr(Prob.get_par(rv9,0),__siren_update_posterior_11) in let () = Prob.set_distr(rv9,__siren_update_marginal_11) in None
+----------------------------------
+distr Prob.get_distr(rv9)
+what is the value of the rv in the set_distr rv9
+what is the value of the distribution in the set_distr bernoulli(Prob.get_p(Prob.get_distr(rv9)))
+abs rv in the set distr function  RV(rv10)
+abs distr in the set distr function  Bernoulli(0.5)
+hoist in the observe <function SSIState.hoist_and_eval.<locals>.kret_val at 0x1213a6340>
+---------------values in score---------------------
+obs
+Prob.get_distr(rv9)
+<function SSIState.score.<locals>.k at 0x1211b2ca0>
+-----------------------------------------------------
+------------------------------print in observe---------------------------------
+<function SSIState.hoist_and_eval.<locals>.kret_val at 0x1213a6340>
+<function SSIState.score.<locals>.k at 0x1211b2ca0>
+<function SSIState.observe.<locals>._observe.<locals>.new_val1 at 0x1211b3380>
+---------------------------------------------------------------------------------
+values of the s <function SSIState.observe.<locals>._observe.<locals>.new_val1 at 0x1211b3380>
+rv  in observe rv9
+v in observe obs
+intervene is  .delta(obs)
+rv rv9
+what is the value of the rv in the set_distr rv9
+what is the value of the distribution in the set_distr .delta(obs)
+absrv in absintervene RV(rv10)
+absintervene Delta(0.0, False)
+abs rv in the set distr function  RV(rv10)
+abs distr in the set distr function  Delta(0.0, False)
+s val in observe in evaluate <function SSIState.observe.<locals>._observe.<locals>.new_val1 at 0x1211b3380>
+s in draw func  let sample S7 <- Prob.get_distr(rv5) in let () = Prob.set_distr(rv5,delta(S7)) in let wheel_slip = S7 in let cmd2 = cmd in let x = if wheel_slip then prev_x else add(prev_x,cmd2) in let x = x in let c0 = List.hd(map) in let c1 = List.hd(List.tl(map)) in let o = if (x = 0.0) then c0 else c1 in let rv9 = Prob.new_var() in let () = Prob.set_distr(rv9,bernoulli(if o then sub(1.0,sensor_noise) else sensor_noise)) in let () = Prob.set_distr(rv9,bernoulli(Prob.get_p(Prob.get_distr(rv9)))) in let __siren_update_posterior_11 = bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(if rv9 then Prob.get_p(Prob.get_distr(rv9)) else (1 + (sub(0,1) * Prob.get_p(Prob.get_distr(rv9)))),Prob.get_par(rv9,0),true)) / if rv9 then ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))) else (1 + (sub(0,1) * ((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false))))))) in let __siren_update_marginal_11 = bernoulli(((Prob.get_p(Prob.get_distr(Prob.get_par(rv9,0))) * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),true)) + (0.5 * Prob.subst_rv(Prob.get_p(Prob.get_distr(rv9)),Prob.get_par(rv9,0),false)))) in let () = Prob.set_distr(Prob.get_par(rv9,0),__siren_update_posterior_11) in let () = Prob.set_distr(rv9,__siren_update_marginal_11) in let () = Prob.set_distr(rv9,bernoulli(Prob.get_p(Prob.get_distr(rv9)))) in let () = Prob.observe_inner(rv9,obs) in let () = Prob.null() in (max_pos, (map, cons(x,xs)))

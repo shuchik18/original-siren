@@ -1,0 +1,12 @@
+-- Direct translation of coin.si. Static DS can retain xt until the return.
+mexpr
+let xt = assume (Beta 1.0 1.0) in
+observe false (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+observe true (Bernoulli xt);
+xt

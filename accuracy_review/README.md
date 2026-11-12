@@ -1,0 +1,1 @@
+The proposed_model_fixes.patch file contains unapplied accuracy repairs to compiled model/runtime semantics. No performance optimizations or inference-interface changes are included. The active runtime and generated files have been restored; only benchmark changes remain active.

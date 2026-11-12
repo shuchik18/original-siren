@@ -1,0 +1,23 @@
+{
+  "protocol": "siren-comparison-v1",
+  "benchmarks": [
+    "slam"
+  ],
+  "particles_by_benchmark": {
+    "slam": [
+      1,
+      10,
+      100,
+      1000,
+      10000
+    ]
+  },
+  "repeats": 5,
+  "seed": 1234,
+  "timeout": 120,
+  "wheels_timeout": null,
+  "warmups_per_repetition": 1,
+  "seed_policy": "SeedSequence child streams per particle",
+  "timing_policy": "particle creation + execution + weighted mean",
+  "estimator": "weighted symbolic component means"
+}

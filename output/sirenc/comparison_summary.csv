@@ -1,0 +1,6 @@
+protocol,engine,benchmark,particles,readout,known_issue,successful_runs,failed_runs,median_time_ms,mean_rmse_rms,mean_standardized_rmse_rms,reference_sha256
+siren-comparison-v1,sirenc,slam,1,symbolic,,5,0,0.466916,0.10305935263915536,0.29729919021198375,93b8b7b67bad96e5a085ad1b20a0ac2899b341d467cb52b83e8a332aa799d5ab
+siren-comparison-v1,sirenc,slam,10,symbolic,,5,0,4.338625,0.09531101883647801,0.2748530977902188,93b8b7b67bad96e5a085ad1b20a0ac2899b341d467cb52b83e8a332aa799d5ab
+siren-comparison-v1,sirenc,slam,100,symbolic,,5,0,46.627,0.02982805923417854,0.0864775360365836,93b8b7b67bad96e5a085ad1b20a0ac2899b341d467cb52b83e8a332aa799d5ab
+siren-comparison-v1,sirenc,slam,1000,symbolic,,5,0,391.983791,0.014709206550512048,0.0424705809283795,93b8b7b67bad96e5a085ad1b20a0ac2899b341d467cb52b83e8a332aa799d5ab
+siren-comparison-v1,sirenc,slam,10000,symbolic,,5,0,4593.406833,0.0037133702203707834,0.010640744109321093,93b8b7b67bad96e5a085ad1b20a0ac2899b341d467cb52b83e8a332aa799d5ab

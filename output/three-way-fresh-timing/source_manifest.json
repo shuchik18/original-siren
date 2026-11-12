@@ -1,0 +1,25 @@
+[
+  {
+    "input_file": "data/siren_raw.csv",
+    "fresh_source": "/Users/skundaliya/Documents/libsiren/original-siren/output/sequential-comparison-2026-11-12/raw.csv",
+    "historical_source": "data/historical_siren_raw.csv",
+    "fresh_rows": 103,
+    "historical_rows": 50,
+    "supplemental_source": "data/particle_one_raw.csv",
+    "supplemental_rows": 25
+  },
+  {
+    "input_file": "data/sirenc_raw.csv",
+    "fresh_source": "/Users/skundaliya/Documents/libsiren/original-siren/output/sequential-comparison-2026-11-12/raw.csv",
+    "historical_source": "data/historical_sirenc_raw.csv",
+    "fresh_rows": 103,
+    "historical_rows": 50,
+    "supplemental_source": "data/particle_one_raw.csv",
+    "supplemental_rows": 25
+  },
+  {
+    "input_file": "data/coreppl_summary.csv",
+    "original_source": "/Users/skundaliya/Documents/Siren_Comparison/data/coreppl_summary.csv",
+    "sha256": "440b7cd6e79ef7ec720acb39b5d983b4427bb70e09b31f50015dbcf941d25f61"
+  }
+]

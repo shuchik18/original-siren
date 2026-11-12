@@ -1,0 +1,4 @@
+let y <- gamma(1, 2) in
+let x <- gaussian(0, 100 * (1/y)) in
+let () = observe(gaussian(x, (1/y)), 3) in
+x

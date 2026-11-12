@@ -1,0 +1,34 @@
+{
+  "gaussian-gaussian": {
+    "direct": "ed40ad218c70d54dac472966c6e80dc15d70a6cfd6231259bacf369a6c457ac8",
+    "compiled": "0b11c71f51141ac7630ebc47df6f7df43f6ab69773c9c8751a858162cba7e310"
+  },
+  "gtree": {
+    "direct": "b0f3911b0e4b1689c1822a0383d37a3d6b7e739281199ceb02be55fe9936b702",
+    "compiled": "341d7929cf9773c757d94ada5f6658a8756b3566cad25b7147a8de9107fc54cd"
+  },
+  "kalman": {
+    "direct": "9a7d837471e5afd94146ff02298c6622c320ce17f90903641a5038e3c08319a0",
+    "compiled": "b8dc78c1431ef367b423a4d424fb4449a833878cfd8560ff94a1211daa54a339"
+  },
+  "wheels": {
+    "direct": "4bfc151aad800ee59e21ea71c1a1c45af5d548ce242f88da8d7422420dfb26a0",
+    "compiled": "361432866dabdffd7a77c14a5a70413436152c266f53c0ba993c38db2acc3595"
+  },
+  "slam": {
+    "direct": "5b38b11ca29bad8b392dc06ee408a1a5b8975d02885a75a71183fd3f881da571",
+    "compiled": "9f4c51a3aca02ee7b4f990e7b0e772bf8853bf7626a5da69ba4e582ac2b1d268"
+  },
+  "outlier": {
+    "direct": "fbcb37ebbfd7dd6a379939224e134ceb97a9adf6dd40343a080a575fcbbd928d",
+    "compiled": "b078b7d6a16feed27e26b625d295858f3d8c0db56b9acc7d293e734a157c830e"
+  },
+  "coin": {
+    "direct": "89b80ae9091c7e56947445d1cb78b290182f720ae809eb638e0f760ac6d06209",
+    "compiled": "bd4cf34b67358b7524320c24ed72643cae1ed1f8d19e22ba6e6c93ddd7f247cb"
+  },
+  "gaussian-gaussian-hybrid": {
+    "direct": "6438e879e6641a5d77495292c1c8912aedacafb11d65d3e8ee553ff0c7f25b7e",
+    "compiled": "e427cf333dbe85af95e21990963a24148062e5cc9bd0993457d3b3592d590bf8"
+  }
+}

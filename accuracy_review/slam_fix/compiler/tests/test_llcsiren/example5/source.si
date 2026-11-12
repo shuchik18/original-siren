@@ -1,0 +1,2 @@
+let sample b <- bernoulli(0.5) in
+b

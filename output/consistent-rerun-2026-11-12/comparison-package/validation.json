@@ -1,0 +1,12 @@
+{
+  "all_eight_siren_sirenc_models_rerun": true,
+  "fresh_runs": 290,
+  "groups_checked": 58,
+  "repetitions_per_group": 5,
+  "all_timing_and_error_aggregates_match": true,
+  "all_counts_points": 98,
+  "matched_points": 87,
+  "coreppl_rerun": false,
+  "coreppl_unchanged": true,
+  "sources_unchanged": true
+}

@@ -1,0 +1,8 @@
+{
+  "benchmark_sirenc.py": "ed1d0e779d429aa3fcafe22b5fdea6364d8e6d17b2894aca8feef1dba91b0cb7",
+  "siren/libsiren.py": "b70cf88f7dea0763cebb7d923cb92113d6a5043e434a0b45e84a42820f1db77e",
+  "siren/inference/interface.py": "0eb6653d3f1473563c40745716870110210b82efbcc8dde119cb86f4741971a2",
+  "benchmark_reference.py": "137bed0eb1ef3a022f466c78327e90c18c307d529bee6afeb4cd29ae7207be1c",
+  "benchmark_protocol.py": "89e77794fc2c3d04a404f677f49e5ef671e3088d0f71829b752cd7d1f820a517",
+  "examples/libsiren-examples/slam-compiled.py": "9f4c51a3aca02ee7b4f990e7b0e772bf8853bf7626a5da69ba4e582ac2b1d268"
+}

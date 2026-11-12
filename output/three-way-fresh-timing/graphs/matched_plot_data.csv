@@ -1,0 +1,94 @@
+engine,model,particles,successful_runs,failed_runs,median_time_ms,standardized_rmse,mean_rmse_rms,readout,requested_readout,method,known_issue,summary_time_ms,source_file,run_origin,source_results
+Siren,coin,1,5,0,0.38375,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,coin,10,5,0,2.930542,9.20548301573787e-16,1.1102230246251565e-16,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,coin,100,5,0,27.822834,4.602741507868935e-15,5.551115123125783e-16,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,coin,1000,5,0,289.376208,4.602741507868935e-15,5.551115123125783e-16,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian,1,5,0,0.139583,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian,10,5,0,0.804,4.657646926676371e-16,4.440892098500626e-16,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian,100,5,0,7.301417,1.8630587706705485e-15,1.7763568394002505e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian,1000,5,0,76.431667,1.8630587706705485e-15,1.7763568394002505e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian-hybrid,1,5,0,0.147334,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian-hybrid,10,5,0,0.9355,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian-hybrid,100,5,0,11.148583,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gaussian-gaussian-hybrid,1000,5,0,84.631458,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gtree,1,5,0,0.31175,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gtree,10,5,0,2.10775,9.725492459839786e-17,8.881784197001252e-16,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gtree,100,5,0,19.769125,2.9176477379519356e-16,2.6645352591003757e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,gtree,1000,5,0,205.2405,2.9176477379519356e-16,2.6645352591003757e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,kalman,1,5,0,0.912125,0.0,0.0,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,kalman,10,5,0,8.6165,2.2595606845233026e-15,1.7763568394002505e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,kalman,100,5,0,87.104917,6.778682053569907e-15,5.329070518200751e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,kalman,1000,5,0,858.275208,6.778682053569907e-15,5.329070518200751e-15,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+Siren,outlier,1,5,0,2.2615,0.5371842150959757,0.436430805036255,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,outlier,10,5,0,14.319875,0.04594217549188969,0.037325334720529714,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,outlier,100,5,0,109.463708,0.011885732014087508,0.009656463175163504,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,outlier,1000,5,0,1002.999583,0.002214510752361168,0.001799160666405195,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,outlier,10000,5,0,10317.966459,0.0008865733665763332,0.0007202890874771546,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,slam,1,5,0,0.546292,0.6532485417464206,0.22990627260557245,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,slam,10,5,0,9.114542,0.2819944417702689,0.09790209964694216,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,slam,100,5,0,48.237042,0.0865982891517401,0.029749227068385183,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,slam,1000,5,0,432.234041,0.043586289161630105,0.015031968005220636,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,slam,10000,5,0,4307.293917,0.00841004484450092,0.002887127900988184,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,historical; not rerun,
+Siren,wheels,1,3,0,43505.082125,7.2587254591632874e-12,3.2868897047810423e-12,symbolic,symbolic,smc-ssi,,,data/siren_raw.csv,sequential paired run 2026-11-12,
+SirenC,coin,1,5,0,0.322083,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,coin,10,5,0,2.421542,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,coin,100,5,0,22.198792,1.841096603147574e-15,2.220446049250313e-16,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,coin,1000,5,0,230.886958,9.20548301573787e-16,1.1102230246251565e-16,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian,1,5,0,0.120792,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian,10,5,0,0.384916,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian,100,5,0,3.670958,9.315293853352743e-16,8.881784197001252e-16,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian,1000,5,0,37.979,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian-hybrid,1,5,0,0.076875,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian-hybrid,10,5,0,0.445209,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian-hybrid,100,5,0,4.217833,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gaussian-gaussian-hybrid,1000,5,0,46.768833,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gtree,1,5,0,0.237459,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gtree,10,5,0,1.362166,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gtree,100,5,0,15.684625,9.725492459839786e-17,8.881784197001252e-16,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,gtree,1000,5,0,134.3255,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,kalman,1,5,0,0.981958,0.0,0.0,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,kalman,10,5,0,9.307125,2.2595606845233026e-15,1.7763568394002505e-15,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,kalman,100,5,0,94.184958,2.2595606845233026e-15,1.7763568394002505e-15,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,kalman,1000,5,0,948.723917,2.2595606845233026e-15,1.7763568394002505e-15,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+SirenC,outlier,1,5,0,1.079833,0.5388663331778778,0.43779742774782376,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,outlier,10,5,0,10.33625,0.04234048148417044,0.03439916866592468,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,outlier,100,5,0,88.481042,0.008198613769806847,0.006660894916837384,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,outlier,1000,5,0,926.072792,0.0026489301298851875,0.0021521010420308315,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,outlier,10000,5,0,9459.290833,0.0006589190002474726,0.000535333209074851,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,slam,1,5,0,0.415875,0.29729919021198375,0.10305935263915536,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,slam,10,5,0,4.048417,0.2748530977902188,0.09531101883647801,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,slam,100,5,0,45.716917,0.0864775360365836,0.02982805923417854,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,slam,1000,5,0,382.212167,0.0424705809283795,0.014709206550512048,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,slam,10000,5,0,4153.859666,0.010640744109321093,0.0037133702203707834,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,historical; not rerun,
+SirenC,wheels,1,3,0,41182.032083,7.2587254591632874e-12,3.2868897047810423e-12,symbolic,symbolic,compiled-symbolic,,,data/sirenc_raw.csv,sequential paired run 2026-11-12,
+Miking CorePPL,coin,1,5,0,0.001220703125,0.0,0.0,posterior,posterior,is-lw,,0.002685546875,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,coin,10,5,0,0.009033203125,0.0,0.0,posterior,posterior,is-lw,,0.009033203125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,coin,100,5,0,0.052734375,0.0,0.0,posterior,posterior,is-lw,,0.08203125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,coin,1000,5,0,0.839111328125,0.0,0.0,posterior,posterior,is-lw,,0.6162109375,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gaussian-gaussian,1,5,0,0.001953125,0.0,0.0,posterior,posterior,is-lw,,0.002197265625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gaussian-gaussian,10,5,0,0.010009765625,0.0,0.0,posterior,posterior,is-lw,,0.010009765625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gaussian-gaussian,100,5,0,0.10791015625,0.0,0.0,posterior,posterior,is-lw,,0.0751953125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gaussian-gaussian,1000,5,0,0.625,0.0,0.0,posterior,posterior,is-lw,,0.510986328125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gtree,1,5,0,0.0029296875,0.3112694129476187,2.842660939118717,posterior,posterior,is-lw,gtree_static_posterior_bias,0.0009765625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gtree,10,5,0,0.02001953125,0.21358524307237617,1.950562446545923,posterior,posterior,is-lw,gtree_static_posterior_bias,0.009033203125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gtree,100,5,0,0.115966796875,0.07206042841175493,0.6580902478096299,posterior,posterior,is-lw,gtree_static_posterior_bias,0.05517578125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gtree,1000,5,0,0.598876953125,0.08081392018110772,0.7380313152534258,posterior,posterior,is-lw,gtree_static_posterior_bias,0.2861328125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,kalman,1,5,0,0.006103515625,0.7035379785524777,0.5530873804538583,posterior,posterior,is-lw,,0.0009765625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,kalman,10,5,0,0.05712890625,0.36366330342092795,0.28589442217478617,posterior,posterior,is-lw,,0.010986328125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,kalman,100,5,0,0.31396484375,0.3883885612799199,0.30533221873612126,posterior,posterior,is-lw,,0.06689453125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,kalman,1000,5,0,2.415283203125,0.11443824708451464,0.08996579038125714,posterior,posterior,is-lw,,0.535888671875,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,wheels,1,5,0,0.0068359375,251.5191164147684,108.68091455426419,samples,posterior,is-lw,,0.02197265625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,outlier,1,5,0,0.002197265625,11.988071242432081,9.739607821930795,samples,posterior,is-lw,,0.002197265625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,outlier,10,5,0,0.014892578125,5.941762380951087,4.8273349558293805,samples,posterior,is-lw,,0.010009765625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,outlier,100,5,0,0.126953125,1.915648406952338,1.5563524633039367,samples,posterior,is-lw,,0.105224609375,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,outlier,1000,5,0,1.1220703125,0.7559870623573302,0.6141953410947666,samples,posterior,is-lw,,0.55908203125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,outlier,10000,5,0,6.878173828125,0.3665219980608503,0.29777771978763623,samples,posterior,is-lw,,2.929931640625,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,slam,1,5,0,0.002197265625,1.1518694624846078,0.40325084554373475,samples,posterior,is-lw,,0.007080078125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,slam,10,5,0,0.012939453125,0.5427697170532741,0.190828890478518,samples,posterior,is-lw,,0.0439453125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,slam,100,5,0,0.069091796875,0.15451872421186802,0.052912267673816384,samples,posterior,is-lw,,0.23828125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,slam,1000,5,0,0.673095703125,0.0533372503353661,0.018518006749847615,samples,posterior,is-lw,,1.85498046875,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,slam,10000,5,0,5.6240234375,0.02283143896382948,0.00794226440181104,samples,posterior,is-lw,,11.93798828125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/symbolic-comparison-20261111/coreppl
+Miking CorePPL,gaussian-gaussian-hybrid,1,5,0,0.0009765625,1.9434130067672752,3.4619290327801306,samples,posterior,is-lw,,0.001220703125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/hybrid-benchmark/coreppl
+Miking CorePPL,gaussian-gaussian-hybrid,10,5,0,0.006103515625,0.22760195782723172,0.4054422930051167,samples,posterior,is-lw,,0.009033203125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/hybrid-benchmark/coreppl
+Miking CorePPL,gaussian-gaussian-hybrid,100,5,0,0.0380859375,0.11438990312451411,0.2037702358195055,samples,posterior,is-lw,,0.069091796875,data/coreppl_summary.csv,historical CorePPL; not rerun,results/hybrid-benchmark/coreppl
+Miking CorePPL,gaussian-gaussian-hybrid,1000,5,0,0.333984375,0.03363796164134991,0.05992150695926614,samples,posterior,is-lw,,0.473876953125,data/coreppl_summary.csv,historical CorePPL; not rerun,results/hybrid-benchmark/coreppl
